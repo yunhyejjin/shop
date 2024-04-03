@@ -1,5 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.util.*"%>
 <%
 	// 인증분기 : 세션변수 이름 - loginEmp
 	String loginEmp = (String)(session.getAttribute("loginEmp"));
@@ -31,12 +32,12 @@
 	<form method="post" action="/shop/emp/empLoginAction.jsp">
 		<div>
 			ID :
-			<input type="text" name="empid">
+			<input type="text" name="empId" value="admin" > <!-- value 값줘서 로그인 고정 -->
 		</div>
 		
 		<div>
 			PW :
-			<input type="password" name="emppw">
+			<input type="password" name="empPw" value="1234"> <!-- value 값줘서 로그인 고정 -->
 		</div>
 		<hr>
 		<div>

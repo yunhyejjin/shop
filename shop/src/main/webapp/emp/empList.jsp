@@ -4,10 +4,7 @@
 
 <!--controller Layer -->
 <%
-	// 인증분기 : 세션변수 이름 - loginEmp
-	String loginEmp = (String)(session.getAttribute("loginEmp"));
-	System.out.println("loginEmp(session) : " + loginEmp);
-	
+	// 인증분기 : 세션변수 이름 - loginEmp	
 	if(session.getAttribute("loginEmp") == null) {
 		response.sendRedirect("/shop/emp/empLogForm.jsp");
 		return;
@@ -72,7 +69,7 @@
 	from emp
 	order by active asc, hire_date desc
 	*/
-	String sql1 = "select emp_id empId, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by hire_date desc limit ?, ?";
+	String sql1 = "select emp_id empId, grade, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by hire_date desc limit ?, ?";
 	
 	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
 	Connection conn = null;
@@ -89,13 +86,13 @@
 	
 	System.out.println(rs1);
 	//JDBC API 종속된 자료구조 모델 ResultSet -> 기본 API 자료구조(ArryList)로 변결
-	ArrayList<HashMap<String, Object>> list
-		= new ArrayList<HashMap<String, Object>>();
+	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
 	
 	// ResultSet -> ArrayList<HashMap<String, Object>> 
 	while(rs1.next()) {
 		HashMap<String, Object> m = new HashMap<String, Object>();
 		m.put("empId", rs1.getString("empId"));
+		m.put("grade", rs1.getInt("grade"));
 		m.put("empName", rs1.getString("empName"));
 		m.put("empJob", rs1.getString("empJob"));
 		m.put("hireDate", rs1.getString("hireDate"));
@@ -114,35 +111,49 @@
 	<title></title>
 </head>
 <body>
+	<!-- empMenu.jsp include : 주체(서버) vs redirect(주체:클라이언트) -->
+	<!-- 주체가 서버이기에 include할때는 절대주소가 /shop/...시작하지 않는다!!! -->
+	<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
 	
 	<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>
+	
 	<h1>사원목록</h1>
-	<table border= "1">
-		<tr>
-			<th>emp_id</th>
-			<th>emp_name</th>
-			<th>emp_job</th>
-			<th>hire_date</th>
-			<th>active</th>
-		</tr>
-		<%
-			for(HashMap<String, Object> m : list) {
-		%>
+	
+		<table border= "1">
 			<tr>
-				<td><%=(String)(m.get("empId"))%></td>
-				<td><%=(String)(m.get("empName"))%></td>
-				<td><%=(String)(m.get("empJob"))%></td>
-				<td><%=(String)(m.get("hireDate"))%></td>
-				<td>
-					<a href='/shop/emp/modifyEmpActive.jsp?empId=<%=(String)(m.get("empId"))%>&active=<%=(String)(m.get("active"))%>'>
-						<%=(String)(m.get("active"))%>
-					</a>
-				</td>
+				<th>emp_id</th>
+				<th>grade</th>
+				<th>emp_name</th>
+				<th>emp_job</th>
+				<th>hire_date</th>
+				<th>active</th>
 			</tr>
-		<%
-			}
-		%>
-	</table>
+				<%
+					for(HashMap<String, Object> m : list) {
+				%>
+					<tr>
+						<td><%=(String)(m.get("empId"))%></td>
+						<td><%=(Integer)(m.get("grade"))%></td>
+						<td><%=(String)(m.get("empName"))%></td>
+						<td><%=(String)(m.get("empJob"))%></td>
+						<td><%=(String)(m.get("hireDate"))%></td>
+						<td>
+							<% // "grade" 0 보다 큰사람만 "active"를 전환할 수 있다
+								HashMap<String, Object> hm = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
+								if((Integer)(hm.get("grade")) > 0) {
+							%> 
+								<a href='/shop/emp/modifyEmpActive.jsp?empId=<%=(String)(m.get("empId"))%>&active=<%=(String)(m.get("active"))%>'>
+									<%=(String)(m.get("active"))%>
+								</a>
+							<%
+								}
+							%>
+						</td>
+					</tr>
+				<% 
+					}
+				%>
+		</table>
 	
 
 </body>
