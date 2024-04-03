@@ -140,7 +140,7 @@
 						<td>
 							<% // "grade" 0 보다 큰사람만 "active"를 전환할 수 있다
 								HashMap<String, Object> hm = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
-								if((Integer)(hm.get("grade")) > 0) {
+								if((Integer)(hm.get("grade"))>= 0) { // 잠시 모두 보기위해 0으로 설정
 							%> 
 								<a href='/shop/emp/modifyEmpActive.jsp?empId=<%=(String)(m.get("empId"))%>&active=<%=(String)(m.get("active"))%>'>
 									<%=(String)(m.get("active"))%>

@@ -20,9 +20,9 @@
 	
 	int rowPerPage = 20; // 한페이지당 보여지는 행수가 20개다
 	int stratRow = ((currentPage-1) * 20);
-%>	
 
-<%	
+
+	
 	String category = request.getParameter("category");		
 %>
 
@@ -37,8 +37,6 @@
 		null 아니면
 		SELECT * FROM goods where category = ?	
 	*/
-
-
 
 	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
 	Connection conn = null;
@@ -61,7 +59,33 @@
 		categoryList.add(hm); // categoryList 객체저장
 	}
 	
-	System.out.println(categoryList);
+	System.out.println("categoryList : " + categoryList);
+%>
+
+<%
+	String sql2 = "select goods_no goodsNo, category, goods_title goodsTitle, goods_content goodsContent, goods_price goodsPrice, update_date updateDate FROM goods order by goodsNo desc LIMIT ?, ?";
+	PreparedStatement stmt2 = null;
+	ResultSet rs2 = null;
+	stmt2 = conn.prepareStatement(sql2);
+	stmt2.setInt(1, startRow);
+	stmt2.setInt(2, rowPerPage);
+	
+	rs2 = stmt2.executeQuery();
+	
+	System.out.println(rs2); //오류확인
+	
+	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+	
+	while(rs2.next()){
+		HashMap<String,Object> m = new HashMap<String,Object> (0);
+		m.put("goodsNo", rs2.getString("goodsNo"));
+		m.put("category", rs2.getString("category"));
+		m.put("goodsTitle", rs2.getString("goodsTitle"));
+		m.put("goodsContent", rs2.getString("goodsContent"));
+		m.put("goodsPrice", rs2.getInt("goodsPrice"));
+		m.put("updateDate", rs2.getString("updateDate"));
+		list.add(m);
+	}
 %>
 
 <!-- View Layer -->
@@ -108,7 +132,18 @@
 				<th>update_date</th>
 			</tr>
 			<%
-			
+				for(HashMap<String, Object> m : list) {
+			%>
+					<tr>
+						<td><%=(String)(m.get("goodsNo"))%></td>
+						<td><%=(String)(m.get("category"))%></td>
+						<td><%=(String)(m.get("goodsTitle"))%></td>
+						<td><%=(String)(m.get("goodsContent"))%></td>
+						<td><%=(Integer)(m.get("goodsPrice"))%></td>
+						<td><%=(String)(m.get("updateDate"))%></td>
+					</tr>
+			<% 		
+				}
 			%>
 		</table>
 	</div>
