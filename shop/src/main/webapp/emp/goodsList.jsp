@@ -30,13 +30,13 @@
 	System.out.println("category : "+ category);
 	
 	/*
-		null이면 
+		null이면 (전체출력문)
 		SELECT category, COUNT(*)
 		FROM goods
 		GROUP BY category
 		ORDER BY category asc; 카테고리별 오름차순으로 정렬
 		
-		null 아니면 
+		null 아니면 (리스트별출력문)
 		SELECT * FROM goods where category = ? limit ?,?	
 	*/
 
@@ -57,13 +57,13 @@
 	while(rs1.next()) {
 		HashMap<String,Object> m1 = new HashMap<String,Object>(); 
 		m1.put("category", rs1.getString("category")); // HashMap(key, value)
-		m1.put("cnt", rs1.getString("cnt"));
+		m1.put("cnt", rs1.getInt("cnt"));
 		categoryList.add(m1); // categoryList에 HashMap(m1)객체 추가
 	}
 	
 	System.out.println("categoryList : " + categoryList);
 	 
-	//null이 아닐때
+	// 상품리스트
 	String sql2 = "select * FROM goods where category = ? limit ?, ?";
 	PreparedStatement stmt2 = null;
 	ResultSet rs2 = null;
@@ -84,6 +84,7 @@
 		m2.put("goodsNo", rs2.getInt("goods_no"));
 		m2.put("category", rs2.getString("category"));
 		m2.put("goodsTitle", rs2.getString("goods_title"));
+		m2.put("fileName", rs2.getString("filename"));
 		m2.put("goodsContent", rs2.getString("goods_content"));
 		m2.put("goodsPrice", rs2.getInt("goods_price"));
 		m2.put("updateDate", rs2.getString("update_date"));	
@@ -125,12 +126,17 @@
 <head>
 	<meta charset="UTF-8">
 	<title>goodsList</title>
+	<!-- 부트스트랩 -->
+	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet">
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 </head>
 <body>
 	<!-- 메인메뉴 -->
 	<div>
 		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
 	</div>
+	
+	<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>
 	
 	<div>
 		<a href="/shop/emp/addGoodsForm.jsp">상품등록</a>
@@ -139,57 +145,73 @@
 	<!-- 서브메뉴 카테고리별 상품리스트-->
 	<div>
 		
-			<a href="/shop/emp/goodsList.jsp?category=">상품전체보기</a>	
+			<a href="/shop/emp/goodsList.jsp">전체</a>	
 		
 		<%
-				
-				for(HashMap<String,Object> m1 : categoryList) {
-					
+				for(HashMap<String,Object> m1 : categoryList) {		
 		%>
-				
 				<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m1.get("category"))%>">
-					<%=(String)(m1.get("category"))%>(<%=(String)(m1.get("cnt"))%>)
-				</a>
-				
+					<%=(String)(m1.get("category"))%>(<%=(Integer)(m1.get("cnt"))%>)
+				</a>			
 		<%
 				}
 		%>
-		
-	</div>	
-				
-	<div>	
-		
-		<table border="1">
-			<tr>
-				<th>goods_No</th>
-				<th>goodsTitle</th>
-				<th>goodsContent</th>
-				<th>goodsPrice</th>
-				<th>update_Date</th>
-			</tr>
-		
-		<% 		
-				
-				for(HashMap<String,Object> m2 : goodsList) {
-		
-		%>
-					<tr>
-						<td><%=(Integer)(m2.get("goodsNo"))%></td>
-						<td><%=(String)(m2.get("category"))%></td>
-						<td><%=(String)(m2.get("goodsTitle"))%></td>
-						<td><%=(String)(m2.get("goodsContent"))%></td>
-						<td><%=(Integer)(m2.get("goodsPrice"))%></td>
-						<td><%=(String)(m2.get("updateDate"))%></td>
-					</tr>
-		<%			
-					
-				}
-		
-		%>
-		
-		</table>
 	
+		
+		<% 
+				for(HashMap<String,Object> m2 : goodsList) {	
+		%>	
+				<div>
+					<div><%=(String)(m2.get("fileName"))%></div>
+					<div><%=(Integer)(m2.get("goodsNo"))%></div>
+					<div><%=(String)(m2.get("goodsTitle"))%></div>
+					<div><%=(Integer)(m2.get("goodsPrice"))%></div>
+				</div>		
+		<%			
+				}
+		%>
 	</div>
+	<!-- 페이징 -->
+		<ul class="pagination">
+		
+			<%
+				if(currentPage > 1) {
+			%>
+					<li class="page-item">
+						<a href="/shop/emp/goodsList.jsp?currentPage=1">처음페이지</a>
+					</li>
+					<li class="page-item">	
+						<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage-1%>">이전페이지</a>
+					</li>				
+			<%		
+				} else {
+			%>
+					<li class="page-item disabled">
+						<a href="/shop/emp/goodsList.jsp?currentPage=1">처음페이지</a>
+					</li>
+					<li class="page-item disabled">
+						<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage-1%>">이전페이지</a>
+					</li>
+			<%		
+				}
+			%>
+				
+			<%
+				if(currentPage < lastPage) {
+			%>
+					<li class="page-item">
+						<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage+1%>">다음페이지</a>
+					</li>
+					<li class="page-item">
+						<a href="/shop/emp/goodsList.jsp?currentPage=<%=lastPage%>">마지막페이지</a>
+					</li>
+			<% 	
+				}
+			%>	
+					
+		</ul>
+		
 
+		
 </body>
 </html>

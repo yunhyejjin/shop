@@ -17,6 +17,7 @@
 	Connection conn = null;
 	PreparedStatement stmt1 = null;
 	ResultSet rs1 = null;
+	
 	conn = DriverManager.getConnection( // DB접속
 			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	
@@ -31,7 +32,7 @@
 		categoryList.add(rs1.getString("category")); // categoryList 객체저장
 	}
 	
-	System.out.println(categoryList);
+	System.out.println("goods-categoryList : " + categoryList);
 %>
 <!-- View Layer -->
 <!DOCTYPE html>
@@ -47,7 +48,8 @@
 	</div>
 
 	<h1>상품등록</h1>
-	<form method="post" action="/shop/emp/addGoodsAction.jsp">
+	<form method="post" action="/shop/emp/addGoodsAction.jsp" 
+			enctype="multipart/form-data">
 		<div>
 			category :
 			<select name="category">
@@ -65,6 +67,10 @@
 		<div>
 		 	goodsTitle :
 		 	<input type="text" name="goodsTitle">
+		</div>
+		<div>
+		 	goodsImage :
+		 	<input type="file" name="goodsImg">
 		</div>
 		<div>
 		 	goodsPrice :
