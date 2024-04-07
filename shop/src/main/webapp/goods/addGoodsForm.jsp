@@ -48,7 +48,7 @@
 	</div>
 
 	<h1>상품등록</h1>
-	<form method="post" action="/shop/emp/addGoodsAction.jsp" 
+	<form method="post" action="/shop/goods/addGoodsAction.jsp" 
 			enctype="multipart/form-data">
 		<div>
 			category :

@@ -20,7 +20,7 @@
 	}
 	
 	int rowPerPage = 20; // 한페이지당 보여지는 행수가 20개다
-	int startRow = ((currentPage-1) * 20);
+	int startRow = ((currentPage-1) * rowPerPage);
 %>
 
 <!--Model Layer -->
@@ -63,7 +63,7 @@
 	
 	System.out.println("categoryList : " + categoryList);
 	 
-	// 상품리스트
+	// 상품리스트 (카테고리별 보여질 목록)
 	String sql2 = "select * FROM goods where category = ? limit ?, ?";
 	PreparedStatement stmt2 = null;
 	ResultSet rs2 = null;
@@ -82,12 +82,10 @@
 	while(rs2.next()){
 		HashMap<String,Object> m2 = new HashMap<String,Object>();
 		m2.put("goodsNo", rs2.getInt("goods_no"));
-		m2.put("category", rs2.getString("category"));
 		m2.put("goodsTitle", rs2.getString("goods_title"));
 		m2.put("fileName", rs2.getString("filename"));
-		m2.put("goodsContent", rs2.getString("goods_content"));
 		m2.put("goodsPrice", rs2.getInt("goods_price"));
-		m2.put("updateDate", rs2.getString("update_date"));	
+		
 		goodsList.add(m2);
 	}
 	
@@ -96,16 +94,19 @@
 %>
 
 <%
-	//페이징 쿼리
-	String sql3 = "select count(*) from goods";
+	//페이징 
+	String sql3 = "select count(*) from goods where category like ?";
 	
 	PreparedStatement stmt3 = null;
 	ResultSet rs3 = null;
 	
 	stmt3 = conn.prepareStatement(sql3);
+	stmt3.setString(1,"%"+category+"%"); //"category" 가 들어가는 
+	
 	rs3 = stmt3.executeQuery();
 	
 	int totalRow = 0;
+	
 	if(rs3.next()) {
 		totalRow = rs3.getInt("count(*)");
 	}
@@ -139,58 +140,65 @@
 	<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>
 	
 	<div>
-		<a href="/shop/emp/addGoodsForm.jsp">상품등록</a>
+		<a href="/shop/goods/addGoodsForm.jsp">상품등록</a>
 	</div>
 	
 	<!-- 서브메뉴 카테고리별 상품리스트-->
 	<div>
 		
-			<a href="/shop/emp/goodsList.jsp">전체</a>	
+			<a href="/shop/goods/goodsList.jsp">전체</a>	
 		
 		<%
 				for(HashMap<String,Object> m1 : categoryList) {		
 		%>
-				<a href="/shop/emp/goodsList.jsp?category=<%=(String)(m1.get("category"))%>">
+				<a href="/shop/goods/goodsList.jsp?category=<%=(String)(m1.get("category"))%>">
 					<%=(String)(m1.get("category"))%>(<%=(Integer)(m1.get("cnt"))%>)
 				</a>			
 		<%
 				}
 		%>
 	
-		
-		<% 
-				for(HashMap<String,Object> m2 : goodsList) {	
-		%>	
-				<div>
-					<div><%=(String)(m2.get("fileName"))%></div>
-					<div><%=(Integer)(m2.get("goodsNo"))%></div>
-					<div><%=(String)(m2.get("goodsTitle"))%></div>
-					<div><%=(Integer)(m2.get("goodsPrice"))%></div>
-				</div>		
-		<%			
-				}
-		%>
-	</div>
+	
+		<div class ="row">
+			<% 
+					for(HashMap<String,Object> m2 : goodsList) {	
+						
+			%>	
+					<div class="col-lg-3">
+						<div class ="card">
+							<div class ="card-body" img src="/shop/upload/<%=(String)(m2.get("fileName"))%>" ></div>
+							<div class ="card-body">상품번호:<%=(Integer)(m2.get("goodsNo"))%></div>
+							<div class ="card-body">상품명:<%=(String)(m2.get("goodsTitle"))%></div>
+							<div class ="card-body">가격:<%=(Integer)(m2.get("goodsPrice"))%></div>
+						</div>	
+					</div>		
+			<%			
+					}
+			%>
+			
+		</div>
+	
 	<!-- 페이징 -->
+	<div>
 		<ul class="pagination">
 		
 			<%
 				if(currentPage > 1) {
 			%>
 					<li class="page-item">
-						<a href="/shop/emp/goodsList.jsp?currentPage=1">처음페이지</a>
+						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1&category=<%=category%>">처음페이지</a>
 					</li>
 					<li class="page-item">	
-						<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage-1%>">이전페이지</a>
+						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>">이전페이지</a>
 					</li>				
 			<%		
 				} else {
 			%>
 					<li class="page-item disabled">
-						<a href="/shop/emp/goodsList.jsp?currentPage=1">처음페이지</a>
+						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1&category=<%=category%>">처음페이지</a>
 					</li>
 					<li class="page-item disabled">
-						<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage-1%>">이전페이지</a>
+						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>">이전페이지</a>
 					</li>
 			<%		
 				}
@@ -200,17 +208,17 @@
 				if(currentPage < lastPage) {
 			%>
 					<li class="page-item">
-						<a href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage+1%>">다음페이지</a>
+						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>">다음페이지</a>
 					</li>
 					<li class="page-item">
-						<a href="/shop/emp/goodsList.jsp?currentPage=<%=lastPage%>">마지막페이지</a>
+						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=lastPage%>&category=<%=category%>">마지막페이지</a>
 					</li>
 			<% 	
 				}
 			%>	
 					
 		</ul>
-		
+	</div>	
 
 		
 </body>

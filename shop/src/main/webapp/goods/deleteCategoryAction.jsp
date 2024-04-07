@@ -14,9 +14,10 @@
 
 <%
 	String category = request.getParameter("category");
-	System.out.println("Add-category : " + category);
+
+	System.out.println("delete-category : " + category);
 	
-	String sql = " insert into category(category) values(?)";
+	String sql = "delete from category where category = ? ";
 	
 	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
 	Connection conn = null;
@@ -33,12 +34,13 @@
 	row = stmt.executeUpdate();
 	
 	if(row == 1) {
-		System.out.println("추가완료");
+		System.out.println("삭제완료");
 	
 	}else {
-		System.out.println("추가실패. 다시확인해주세요.");
-		response.sendRedirect("/shop/emp/categoryList.jsp");
+		System.out.println("삭제실패. 다시확인해주세요.");
+		response.sendRedirect("/shop/goods/categoryList.jsp");
 	}
 	
-	response.sendRedirect("/shop/emp/categoryList.jsp");
+	response.sendRedirect("/shop/goods/categoryList.jsp");
 %>
+

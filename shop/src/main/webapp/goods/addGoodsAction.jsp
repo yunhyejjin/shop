@@ -105,8 +105,8 @@
 	
 	} else {
 		System.out.println("상품등록실패,다시확인해주세요");
-		response.sendRedirect("/shop/emp/addGoodsForm.jsp");
+		response.sendRedirect("/shop/goods/addGoodsForm.jsp");
 	}
 
-	response.sendRedirect("/shop/emp/goodsList.jsp");
+	response.sendRedirect("/shop/goods/goodsList.jsp");
 %>
