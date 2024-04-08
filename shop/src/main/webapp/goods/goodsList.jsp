@@ -2,125 +2,112 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*"%>
 
-
 <!--controller Layer -->
 <%
-	// 인증분기 : 세션변수 이름 - loginEmp	
-	if(session.getAttribute("loginEmp") == null) {
-		response.sendRedirect("/shop/emp/empLogForm.jsp");
-		return;
-	}
+	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
+	Connection conn = null;
+	conn = DriverManager.getConnection( // DB접속
+			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 %>
 
 <%
-	
+	//현재페이지
 	int currentPage = 1;
-	if(request.getParameter("currentPage") != null){
+	if(request.getParameter("currentPage") != null) {
 		currentPage = Integer.parseInt(request.getParameter("currentPage"));
 	}
 	
-	int rowPerPage = 20; // 한페이지당 보여지는 행수가 20개다
-	int startRow = ((currentPage-1) * rowPerPage);
+	int rowPerPage = 6; // 한페이지당 보여지는 row수 20개
+	int startRow = ((currentPage-1) * rowPerPage); // 시작 row
 %>
 
 <!--Model Layer -->
-<%
+<%	
+	// category 요청값
 	String category = request.getParameter("category");	
-			
-	System.out.println("category : "+ category);
+	System.out.println("category : " + category);
 	
-	/*
-		null이면 (전체출력문)
-		SELECT category, COUNT(*)
-		FROM goods
-		GROUP BY category
-		ORDER BY category asc; 카테고리별 오름차순으로 정렬
-		
-		null 아니면 (리스트별출력문)
-		SELECT * FROM goods where category = ? limit ?,?	
-	*/
-
-	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
-	Connection conn = null;
-	PreparedStatement stmt1 = null;
-	ResultSet rs1 = null;
-	conn = DriverManager.getConnection( // DB접속
-			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	//null일떄
-	String sql1 = "select category, COUNT(*) cnt FROM goods GROUP BY category ORDER BY category asc;";
-	stmt1 = conn.prepareStatement(sql1); 
-	rs1 = stmt1.executeQuery();
+	if(category == null) {
+		category = ""; // category 값이 null값이면(전체출력) 공백으로 값을 나타냄.
+	}
+	
+	//전체 출력문
+	String sql = "select category, COUNT(*) cnt FROM goods GROUP BY category ORDER BY category asc;";
+	PreparedStatement stmt = null;
+	ResultSet rs = null;
+	stmt = conn.prepareStatement(sql); 
+	rs = stmt.executeQuery();
+	System.out.println("rs : " + rs);
 	
 	ArrayList<HashMap<String, Object>> categoryList 
-		= new ArrayList<HashMap<String, Object>>();
-	
-	while(rs1.next()) {
-		HashMap<String,Object> m1 = new HashMap<String,Object>(); 
-		m1.put("category", rs1.getString("category")); // HashMap(key, value)
-		m1.put("cnt", rs1.getInt("cnt"));
-		categoryList.add(m1); // categoryList에 HashMap(m1)객체 추가
+	= new ArrayList<HashMap<String, Object>>();
+
+	while(rs.next()) {
+		HashMap<String,Object> m = new HashMap<String,Object>(); 
+		m.put("category", rs.getString("category")); // HashMap(key, value)
+		m.put("cnt", rs.getInt("cnt"));
+		categoryList.add(m); // categoryList에 HashMap(m)객체 추가
 	}
 	
 	System.out.println("categoryList : " + categoryList);
-	 
-	// 상품리스트 (카테고리별 보여질 목록)
-	String sql2 = "select * FROM goods where category = ? limit ?, ?";
+	
+	// 카테고리별 출력문
+	String sql1 = "select * FROM goods where category like ? order by update_date desc limit ?, ?";
+		
+	PreparedStatement stmt1 = null;
+	ResultSet rs1 = null;
+	stmt1 = conn.prepareStatement(sql1);
+	stmt1.setString(1,"%"+category+"%");
+	stmt1.setInt(2, startRow);
+	stmt1.setInt(3, rowPerPage);
+		
+	rs1 = stmt1.executeQuery();
+	System.out.println("rs1 : " + rs1); //오류확인
+		
+	ArrayList<HashMap<String, Object>> goodsList 
+		= new ArrayList<HashMap<String, Object>>(); 
+		
+	while(rs1.next()){
+		HashMap<String,Object> m1 = new HashMap<String,Object>();
+		m1.put("goodsNo", rs1.getInt("goods_no"));
+		m1.put("goodsTitle", rs1.getString("goods_title"));
+		m1.put("fileName", rs1.getString("filename"));
+		m1.put("goodsPrice", rs1.getInt("goods_price"));
+			
+		goodsList.add(m1);
+	}
+		
+	System.out.println("goodsList : " + goodsList);
+	
+	
+	
+	//카테고리별 페이징 출력문
+	String sql2 = "select count(*) cnt from goods where category like ?";
+	
 	PreparedStatement stmt2 = null;
 	ResultSet rs2 = null;
+	
 	stmt2 = conn.prepareStatement(sql2);
-	stmt2.setString(1, category); // 카테고리별 품목조회
-	stmt2.setInt(2, startRow);
-	stmt2.setInt(3, rowPerPage);
+	stmt2.setString(1,"%"+category+"%"); // 이 "category" 가 들어가는 부분을 페이징
 	
 	rs2 = stmt2.executeQuery();
 	
-	System.out.println(rs2); //오류확인
-	
-	ArrayList<HashMap<String, Object>> goodsList 
-		= new ArrayList<HashMap<String, Object>>(); 
-	
-	while(rs2.next()){
-		HashMap<String,Object> m2 = new HashMap<String,Object>();
-		m2.put("goodsNo", rs2.getInt("goods_no"));
-		m2.put("goodsTitle", rs2.getString("goods_title"));
-		m2.put("fileName", rs2.getString("filename"));
-		m2.put("goodsPrice", rs2.getInt("goods_price"));
-		
-		goodsList.add(m2);
-	}
-	
-	System.out.println("goodsList : " + goodsList);
-	
-%>
-
-<%
-	//페이징 
-	String sql3 = "select count(*) from goods where category like ?";
-	
-	PreparedStatement stmt3 = null;
-	ResultSet rs3 = null;
-	
-	stmt3 = conn.prepareStatement(sql3);
-	stmt3.setString(1,"%"+category+"%"); //"category" 가 들어가는 
-	
-	rs3 = stmt3.executeQuery();
-	
 	int totalRow = 0;
-	
-	if(rs3.next()) {
-		totalRow = rs3.getInt("count(*)");
+	if(rs2.next()) {
+		totalRow = rs2.getInt("cnt");
 	}
+
+	System.out.println("totalRow: " + totalRow);
 	
-	System.out.println("totalRow: " + totalRow); // 전체행 500
-	
-	int lastPage = totalRow/rowPerPage; //마지막 페이지 = 전체 행/한 페이지당 보여지는 행(20)
-	if(totalRow%rowPerPage !=0) {
-		lastPage = lastPage + 1;  // 나머지 값(남은 행)이 생기기 때문에 +1(다음페이지)을 해줘야 함  
+	int lastPage = totalRow / rowPerPage; 
+	if(totalRow%rowPerPage !=0) { 
+		lastPage = lastPage + 1; 
 	}
 	
 	System.out.println("lastPage: " + lastPage);
+	
+	
 %>
-
 <!-- View Layer -->
 <!DOCTYPE html>
 <html>
@@ -144,41 +131,52 @@
 	</div>
 	
 	<!-- 서브메뉴 카테고리별 상품리스트-->
-	<div>
-		
-			<a href="/shop/goods/goodsList.jsp">전체</a>	
-		
-		<%
-				for(HashMap<String,Object> m1 : categoryList) {		
-		%>
-				<a href="/shop/goods/goodsList.jsp?category=<%=(String)(m1.get("category"))%>">
-					<%=(String)(m1.get("category"))%>(<%=(Integer)(m1.get("cnt"))%>)
-				</a>			
-		<%
-				}
-		%>
+	<nav class="navbar navbar-expand-sm bg-danger justify-content-center">
+		<div class="container">
+			<ul class="navbar-nav">
+						 	<li class="nav-item">
+								<a class="nav-link" href="/shop/goods/goodsList.jsp">전체</a>
+							</li>
+				<%
+						for(HashMap<String,Object> m : categoryList) {		
+				%>
+							<li class="nav-item">
+								<a class="nav-link" href="/shop/goods/goodsList.jsp?category=<%=(String)(m.get("category"))%>">
+									<%=(String)(m.get("category"))%>(<%=(Integer)(m.get("cnt"))%>)
+								</a>
+							</li>			
+				<%
+						}
+				%>	
+			<ul class="navbar-nav">
+		</div>
+	</nav>
 	
+	<div class ="row">
 	
-		<div class ="row">
 			<% 
-					for(HashMap<String,Object> m2 : goodsList) {	
+					for(HashMap<String,Object> m1 : goodsList) {	
 						
 			%>	
-					<div class="col-lg-3">
-						<div class ="card">
-							<div class ="card-body" img src="/shop/upload/<%=(String)(m2.get("fileName"))%>" ></div>
-							<div class ="card-body">상품번호:<%=(Integer)(m2.get("goodsNo"))%></div>
-							<div class ="card-body">상품명:<%=(String)(m2.get("goodsTitle"))%></div>
-							<div class ="card-body">가격:<%=(Integer)(m2.get("goodsPrice"))%></div>
+					<div class="col-4" >
+						<div class ="card m-3" style="width:500px">
+							<a href="/shop/goods/goodsOne.jsp?goodsNo=<%=(Integer)(m1.get("goodsNo"))%>">
+								<img class="card-img-top" src="/shop/upload/<%=(String)(m1.get("fileName"))%>">
+							</a>
+							<div class ="card-body">
+								<p class="card-text">상품번호:<%=(Integer)(m1.get("goodsNo"))%></p>
+								<p class="card-text">상품명:<%=(String)(m1.get("goodsTitle"))%></p>
+								<p class="card-text">가격:<%=(Integer)(m1.get("goodsPrice"))%></p>
+							</div>
 						</div>	
 					</div>		
 			<%			
 					}
-			%>
-			
-		</div>
+			%>	
+
+	</div>
 	
-	<!-- 페이징 -->
+		<!-- 페이징 -->
 	<div>
 		<ul class="pagination">
 		
@@ -218,8 +216,6 @@
 			%>	
 					
 		</ul>
-	</div>	
-
-		
+	</div>
 </body>
 </html>

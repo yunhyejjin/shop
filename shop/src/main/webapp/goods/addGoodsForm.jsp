@@ -48,8 +48,10 @@
 	</div>
 
 	<h1>상품등록</h1>
+	
 	<form method="post" action="/shop/goods/addGoodsAction.jsp" 
 			enctype="multipart/form-data">
+		
 		<div>
 			category :
 			<select name="category">
@@ -63,29 +65,31 @@
 				%>		
 			</select>
 		</div>
+		
 		<!-- empId값음 action쪽에서 세션변수에서 바인딩(가져오기) -->
 		<div>
 		 	goodsTitle :
 		 	<input type="text" name="goodsTitle">
 		</div>
+		
 		<div>
 		 	goodsImage :
 		 	<input type="file" name="goodsImg">
 		</div>
+		
 		<div>
 		 	goodsPrice :
 		 	<input type="number" name="goodsPrice">
 		</div>
+		
 		<div>
 		 	goodsAmount :
 		 	<input type="number" name="goodsAmount">
 		</div>
-		<br>
 		<div>
 		 	goodsContent :
 		 	<textarea rows="5" cols="50" name="goodsContent"></textarea>
 		</div>
-		<br>
 		
 		<div>
 			<button type="submit">상품등록</button>

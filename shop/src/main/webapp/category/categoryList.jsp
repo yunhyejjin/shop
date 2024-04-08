@@ -69,7 +69,7 @@
 						<td><%=(String)(h.get("category"))%></td>
 						<td><%=(String)(h.get("createDate"))%></td>
 						<td>
-							<a href="/shop/goods/deleteCategoryAction.jsp?category=<%=(String)(h.get("category"))%>">
+							<a href="/shop/category/deleteCategoryAction.jsp?category=<%=(String)(h.get("category"))%>">
 								<button type="submit">삭제</button>
 							</a>
 						</td>
@@ -83,7 +83,7 @@
 	</div>
 	
 	<div>
-		<form method="post" action="/shop/goods/addCategoryAction.jsp" >
+		<form method="post" action="/shop/category/addCategoryAction.jsp" >
 			<input type="text" name="category" placeholder="category name">
 			<button type="submit">추가</button>		
 		</form>

@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
 <%@ page import="java.sql.*" %>
+<%@ page import="java.net.*"%>
 <%@ page import="java.io.*" %>
 <%@ page import="java.nio.file.*" %>
 
@@ -26,16 +27,8 @@
 	String category = request.getParameter("category");
 	String goodsTitle = request.getParameter("goodsTitle");
 	String goodsContent = request.getParameter("goodsContent");
-	System.out.println("goodsPrice : " + request.getParameter("goodsPrice"));
-	int goodsPrice = Integer.parseInt(request.getParameter("goodsPrice"));
-	int goodsAmount = Integer.parseInt(request.getParameter("goodsAmount"));
-	
-	System.out.println("category : " + category);
-	System.out.println("goodsTitle : " + goodsTitle);
-	
-	System.out.println("goodsContent : " + goodsContent);
-	System.out.println("goodsPrice : " + goodsPrice);
-	System.out.println("goodsAmount : " + goodsAmount);
+	String goodsPrice = request.getParameter("goodsPrice");
+	String goodsAmount = request.getParameter("goodsAmount");
 	
 	Part part = request.getPart("goodsImg");
 	// 업로드된 원본 파일 이름
@@ -69,8 +62,8 @@
 	stmt.setString(3, goodsTitle);
 	stmt.setString(4, filename);
 	stmt.setString(5, goodsContent);
-	stmt.setInt(6, goodsPrice);
-	stmt.setInt(7, goodsAmount);
+	stmt.setString(6, goodsPrice);
+	stmt.setString(7, goodsAmount);
 
 	System.out.println("stmt 확인 :" + stmt);
 
