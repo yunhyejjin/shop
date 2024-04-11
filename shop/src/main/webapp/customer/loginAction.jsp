@@ -39,6 +39,7 @@
 	stmt.setString(2,customerPw);
 	rs = stmt.executeQuery(); // 쿼리문
 	
+	System.out.println(rs);
 %>
 
 <%	
@@ -59,8 +60,8 @@
 		// 디버깅
 		HashMap<String, Object> m = (HashMap<String, Object>)session.getAttribute("loginCustomer");
 		
-		System.out.println((String)m.get("mail"));
-		System.out.println((String)m.get("pw"));
+		System.out.println("login-mail : " + (String)m.get("mail"));
+		System.out.println("login-pw : " + (String)m.get("pw"));
 		
 		response.sendRedirect("/shop/customer/goodsList.jsp");
 		

@@ -59,9 +59,9 @@
 		// 디버깅
 		HashMap<String, Object> hm = (HashMap<String, Object>)session.getAttribute("loginEmp");
 		
-		System.out.println((String)hm.get("empId"));
-		System.out.println((String)hm.get("empName"));
-		System.out.println((Integer)hm.get("grade")); //참조변수 확인할 것 int
+		System.out.println("login-empId : " + (String)hm.get("empId"));
+		System.out.println("login-empName : " + (String)hm.get("empName"));
+		System.out.println("login-grade : " + (Integer)hm.get("grade")); //참조변수 확인할 것 int
 		
 		response.sendRedirect("/shop/emp/empList.jsp");
 		
