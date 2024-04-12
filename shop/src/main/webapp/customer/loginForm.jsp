@@ -41,11 +41,13 @@
 		<div>
 			<button type="submit">로그인</button>
 		</div>
-		
-		<div>
-			<button type="submit">회원가입</button>
-		</div>
 	</form>
-
+	
+		<div>
+			<a href="/shop/customer/addCustomerForm.jsp">
+				<button type="submit">회원가입</button>
+			</a>
+		</div>
+	
 </body>
 </html>
