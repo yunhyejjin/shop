@@ -58,10 +58,10 @@
 		session.setAttribute("loginCustomer", loginCustomer); // session이 "loginCustomer"
 		
 		// 디버깅
-		HashMap<String, Object> m = (HashMap<String, Object>)session.getAttribute("loginCustomer");
+		HashMap<String, Object> m = (HashMap<String, Object>)(session.getAttribute("loginCustomer"));
 		
-		System.out.println("login-mail : " + (String)m.get("mail"));
-		System.out.println("login-pw : " + (String)m.get("pw"));
+		System.out.println("login-mail : " + (String)m.get("customerMail"));
+		System.out.println("login-pw : " + (String)m.get("customerPw"));
 		
 		response.sendRedirect("/shop/customer/goodsList.jsp");
 		

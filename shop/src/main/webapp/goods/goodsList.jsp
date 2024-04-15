@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*"%>
+<%@ page import="shop.dao.*" %>
 
 <!--controller Layer -->
 <%
@@ -32,51 +33,12 @@
 	}
 	
 	//전체 출력문
-	String sql = "select category, COUNT(*) cnt FROM goods GROUP BY category ORDER BY category asc;";
-	PreparedStatement stmt = null;
-	ResultSet rs = null;
-	stmt = conn.prepareStatement(sql); 
-	rs = stmt.executeQuery();
-	System.out.println("rs : " + rs);
-	
-	ArrayList<HashMap<String, Object>> categoryList 
-	= new ArrayList<HashMap<String, Object>>();
-
-	while(rs.next()) {
-		HashMap<String,Object> m = new HashMap<String,Object>(); 
-		m.put("category", rs.getString("category")); // HashMap(key, value)
-		m.put("cnt", rs.getInt("cnt"));
-		categoryList.add(m); // categoryList에 HashMap(m)객체 추가
-	}
-	
-	System.out.println("categoryList : " + categoryList);
+	ArrayList<HashMap<String, Object>> total = GoodsCntDAO.CategoryList(category, cnt);
+	System.out.println("categoryList : " + CategoList);
 	
 	// 카테고리별 출력문
-	String sql1 = "select * FROM goods where category like ? order by update_date desc limit ?, ?";
-		
-	PreparedStatement stmt1 = null;
-	ResultSet rs1 = null;
-	stmt1 = conn.prepareStatement(sql1);
-	stmt1.setString(1,"%"+category+"%");
-	stmt1.setInt(2, startRow);
-	stmt1.setInt(3, rowPerPage);
-		
-	rs1 = stmt1.executeQuery();
-	System.out.println("rs1 : " + rs1); //오류확인
-		
-	ArrayList<HashMap<String, Object>> goodsList 
-		= new ArrayList<HashMap<String, Object>>(); 
-		
-	while(rs1.next()){
-		HashMap<String,Object> m1 = new HashMap<String,Object>();
-		m1.put("goodsNo", rs1.getInt("goods_no"));
-		m1.put("goodsTitle", rs1.getString("goods_title"));
-		m1.put("fileName", rs1.getString("filename"));
-		m1.put("goodsPrice", rs1.getInt("goods_price"));
-			
-		goodsList.add(m1);
-	}
-		
+	ArrayList<HashMap<String, Object>> goodsList = GoodsDAO.GoodsList(category, startRow, rowPerPage);
+	
 	System.out.println("goodsList : " + goodsList);
 	
 	

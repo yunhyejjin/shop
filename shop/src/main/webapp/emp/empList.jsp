@@ -1,6 +1,8 @@
+<%@page import="java.util.concurrent.CopyOnWriteArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*"%>
+<%@ page import="shop.dao.*" %>
 
 <!--controller Layer -->
 <%
@@ -57,48 +59,21 @@
 	int rowPerPage = 10; // 한페이지당 보여지는 행수(10개)
 	int startRow = (currentPage - 1) * rowPerPage; // 페이지당 시작하는 행번호
 
-%>
-<!--Model Layer -->
-<%
+
+//!--Model Layer -->
+
 	// 특수한 형태의 데이터(RDBMS:maeisdb)
 	// -> API사용 (JDBC API)하여 자료구조(ResultSet) 취득
 	// -> 일반화된 자료구조(ArryList<HashMap>)로 변경 -> 모델 취득
 	
-	/*
-	select emp_id empId, emp_name empName, emp_job empJob,  hire_date hireDate, active
-	from emp
-	order by active asc, hire_date desc
-	*/
-	String sql1 = "select emp_id empId, grade, emp_name empName, emp_job empJob, hire_date hireDate, active from emp order by hire_date desc limit ?, ?";
+
 	
-	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
-	Connection conn = null;
-	PreparedStatement stmt1 = null;
-	ResultSet rs1 = null;
-	
-	conn = DriverManager.getConnection( // DB접속
-			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	stmt1 = conn.prepareStatement(sql1); // 객체 생성
-	stmt1.setInt(1,startRow);
-	stmt1.setInt(2,rowPerPage);
-	
-	rs1 = stmt1.executeQuery(); // 쿼리문
-	
-	System.out.println(rs1);
 	//JDBC API 종속된 자료구조 모델 ResultSet -> 기본 API 자료구조(ArryList)로 변결
-	ArrayList<HashMap<String, Object>> list = new ArrayList<HashMap<String, Object>>();
+	ArrayList<HashMap<String, Object>> empList = EmpListDAO.EmpList(startRow, rowPerPage);
 	
 	// ResultSet -> ArrayList<HashMap<String, Object>> 
-	while(rs1.next()) {
-		HashMap<String, Object> m = new HashMap<String, Object>();
-		m.put("empId", rs1.getString("empId"));
-		m.put("grade", rs1.getInt("grade"));
-		m.put("empName", rs1.getString("empName"));
-		m.put("empJob", rs1.getString("empJob"));
-		m.put("hireDate", rs1.getString("hireDate"));
-		m.put("active", rs1.getString("active"));
-		list.add(m);
-	}
+
+	
 	// JDBC API 사용이 끝났다면 DB자원들을을 반납
 	
 %>
@@ -129,7 +104,7 @@
 				<th>active</th>
 			</tr>
 				<%
-					for(HashMap<String, Object> m : list) {
+					for(HashMap<String, Object> m : empList) {
 				%>
 					<tr>
 						<td><%=(String)(m.get("empId"))%></td>
@@ -139,8 +114,8 @@
 						<td><%=(String)(m.get("hireDate"))%></td>
 						<td>
 							<% // "grade" 0 보다 큰사람만 "active"를 전환할 수 있다
-								HashMap<String, Object> hm = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
-								if((Integer)(hm.get("grade"))>= 0) { // 잠시 모두 보기위해 0으로 설정
+								HashMap<String, Object> resultMap = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
+								if((Integer)(resultMap.get("grade"))> 0) { 
 							%> 
 								<a href='/shop/emp/modifyEmpActive.jsp?empId=<%=(String)(m.get("empId"))%>&active=<%=(String)(m.get("active"))%>'>
 									<%=(String)(m.get("active"))%>
