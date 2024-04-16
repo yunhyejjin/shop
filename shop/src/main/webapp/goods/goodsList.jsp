@@ -5,13 +5,6 @@
 
 <!--controller Layer -->
 <%
-	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
-	Connection conn = null;
-	conn = DriverManager.getConnection( // DB접속
-			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-%>
-
-<%
 	//현재페이지
 	int currentPage = 1;
 	if(request.getParameter("currentPage") != null) {
@@ -33,8 +26,9 @@
 	}
 	
 	//전체 출력문
-	ArrayList<HashMap<String, Object>> total = GoodsCntDAO.CategoryList(category, cnt);
-	System.out.println("categoryList : " + CategoList);
+	ArrayList<HashMap<String, Object>> TotalList = GoodsCntDAO.TotalList();
+	
+	System.out.println("TotalList(cnt) : " + TotalList);
 	
 	// 카테고리별 출력문
 	ArrayList<HashMap<String, Object>> goodsList = GoodsDAO.GoodsList(category, startRow, rowPerPage);
@@ -42,23 +36,8 @@
 	System.out.println("goodsList : " + goodsList);
 	
 	
-	
 	//카테고리별 페이징 출력문
-	String sql2 = "select count(*) cnt from goods where category like ?";
-	
-	PreparedStatement stmt2 = null;
-	ResultSet rs2 = null;
-	
-	stmt2 = conn.prepareStatement(sql2);
-	stmt2.setString(1,"%"+category+"%"); // 이 "category" 가 들어가는 부분을 페이징
-	
-	rs2 = stmt2.executeQuery();
-	
-	int totalRow = 0;
-	if(rs2.next()) {
-		totalRow = rs2.getInt("cnt");
-	}
-
+	int totalRow = GoodsPageDAO.GoodsPage(category);
 	System.out.println("totalRow: " + totalRow);
 	
 	int lastPage = totalRow / rowPerPage; 
@@ -100,7 +79,7 @@
 								<a class="nav-link" href="/shop/goods/goodsList.jsp">전체</a>
 							</li>
 				<%
-						for(HashMap<String,Object> m : categoryList) {		
+						for(HashMap<String,Object> m : TotalList) {		
 				%>
 							<li class="nav-item">
 								<a class="nav-link" href="/shop/goods/goodsList.jsp?category=<%=(String)(m.get("category"))%>">

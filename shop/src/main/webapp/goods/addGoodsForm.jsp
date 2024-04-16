@@ -1,9 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*"%>
+<%@ page import="shop.dao.*" %>
 <!--controller Layer -->
 <%
-	
 	// 인증분기 : 세션변수 이름 - loginEmp	
 	if(session.getAttribute("loginEmp") == null) {
 		response.sendRedirect("/shop/emp/empLogForm.jsp");
@@ -13,25 +13,7 @@
 
 <!--Model Layer -->
 <%
-	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
-	Connection conn = null;
-	PreparedStatement stmt1 = null;
-	ResultSet rs1 = null;
-	
-	conn = DriverManager.getConnection( // DB접속
-			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
-	String sql1 = "SELECT category FROM category";
-	stmt1 = conn.prepareStatement(sql1); 
-	rs1 = stmt1.executeQuery();
-	
-	ArrayList<String> categoryList = new ArrayList<String>();
-	
-	while(rs1.next()) {
-		
-		categoryList.add(rs1.getString("category")); // categoryList 객체저장
-	}
-	
+	ArrayList<String> categoryList = addGoodsDAO.addGoods();
 	System.out.println("goods-categoryList : " + categoryList);
 %>
 <!-- View Layer -->

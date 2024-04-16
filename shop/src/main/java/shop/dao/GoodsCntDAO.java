@@ -4,9 +4,8 @@ import java.sql.*;
 import java.util.*;
 
 public class GoodsCntDAO {
-	public static ArrayList<HashMap<String, Object>> CategoryList(
-			String category, int cnt)throws Exception {
-		ArrayList<HashMap<String, Object>> totalList =
+	public static ArrayList<HashMap<String, Object>> TotalList()throws Exception {
+		ArrayList<HashMap<String, Object>> TotalList =
 				new ArrayList<HashMap<String, Object>>();
 		
 		Connection conn = DBHelper.getConnection();
@@ -18,11 +17,11 @@ public class GoodsCntDAO {
 			HashMap<String,Object> m = new HashMap<String,Object>(); 
 			m.put("category", rs.getString("category")); // HashMap(key, value)
 			m.put("cnt", rs.getInt("cnt"));
-			totalList.add(m); // 
+			TotalList.add(m); // 
 		}
 		
 		conn.close();
-		return totalList;
+		return TotalList;
 		
 	}
 
