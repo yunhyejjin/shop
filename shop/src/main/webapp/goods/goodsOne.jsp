@@ -2,10 +2,10 @@
 <%@ page import = "java.sql.*" %>
 
 <%
-	String goodsNo = request.getParameter("goodsNo");
-	System.out.println("goodsNo : " + goodsNo);
+	int goodsNo	= Integer.parseInt(request.getParameter("goodsNo"));
+	System.out.println("goodsNo(goodsOne) : " + goodsNo);
 
-	String sql = "select * FROM goods where goods_no= ? ";	
+	String sql = "select * FROM goods where goods_no = ? ";	
 	
 	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
 	Connection conn = null;
@@ -15,7 +15,7 @@
 	conn = DriverManager.getConnection( // DB접속
 			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	stmt = conn.prepareStatement(sql);
-	stmt.setString(1,goodsNo);
+	stmt.setInt(1,goodsNo);
 	rs = stmt.executeQuery();
 	
 	System.out.println("rs : " + rs);
@@ -60,8 +60,8 @@
 	%>
 	
 	<div>
-		<a href="/shop/goods/updateGoodsForm.jsp">상품수정</a>
-		<a href="/shop/goods/deleteGoodsAction.jsp">상품삭제</a>
+		<a href="/shop/goods/updateGoodsForm.jsp?goodsNo=<%=goodsNo%>">상품수정</a>
+		<a href="/shop/goods/deleteGoodsAction.jsp?goodsNo=<%=goodsNo%>">상품삭제</a>
 	</div>
 
 </body>

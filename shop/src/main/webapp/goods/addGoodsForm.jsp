@@ -2,8 +2,8 @@
 <%@ page import="java.sql.*" %>
 <%@ page import="java.util.*"%>
 <%@ page import="shop.dao.*" %>
-<!--controller Layer -->
 
+<!--controller Layer -->
 <%
 	if(session.getAttribute("loginEmp") == null) {
 		response.sendRedirect("/shop/emp/empLoginForm.jsp");
@@ -65,10 +65,6 @@
 		 	<input type="number" name="goodsPrice">
 		</div>
 		
-		<div>
-		 	goodsAmount :
-		 	<input type="number" name="goodsAmount">
-		</div>
 		<div>
 		 	goodsContent :
 		 	<textarea rows="5" cols="50" name="goodsContent"></textarea>

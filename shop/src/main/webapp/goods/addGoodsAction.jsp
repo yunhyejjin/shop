@@ -21,16 +21,17 @@
 		= (HashMap<String, Object>)(session.getAttribute("loginEmp"));
 	System.out.println(loginMember);
 	System.out.println(loginMember.get("empId"));
-	String empId = (String)loginMember.get("empId");
+
 %>
 
 <!--Model Layer -->
 <%
-	String category = request.getParameter("category");
+	//변수값 가져오기
+	String empId = (String)loginMember.get("empId");
+  	String category = request.getParameter("category");
 	String goodsTitle = request.getParameter("goodsTitle");
 	String goodsContent = request.getParameter("goodsContent");
-	String goodsPrice = request.getParameter("goodsPrice");
-	String goodsAmount = request.getParameter("goodsAmount");
+	int goodsPrice = Integer.parseInt(request.getParameter("goodsPrice"));
 	
 	Part part = request.getPart("goodsImg");
 	// 업로드된 원본 파일 이름
@@ -42,15 +43,15 @@
 	String filename = uuid.toString().replace("-", "");
 	filename = filename + ext;
 	
-	System.out.println("category : " + category);
-	System.out.println("goodsTitle : " + goodsTitle);
-	System.out.println("filename : " + filename);
-	System.out.println("goodsContent : " + goodsContent);
-	System.out.println("goodsPrice : " + goodsPrice);
-	System.out.println("goodsAmount : " + goodsAmount);
+	//디버깅
+	System.out.println("category(상품등록) : " + category);
+	System.out.println("goodsTitle(상품등록) : " + goodsTitle);
+	System.out.println("filename(상품등록) : " + filename);
+	System.out.println("goodsContent(상품등록) : " + goodsContent);
+	System.out.println("goodsPrice(상품등록) : " + goodsPrice);
 
-	int row = addGoodsActionDAO.addGoodsAction(category, empId, goodsTitle, filename, goodsContent, goodsPrice, goodsAmount);
-	System.out.println(row);
+	int row = addGoodsActionDAO.addGoodsAction(category, empId, goodsTitle, filename, goodsContent, goodsPrice);
+	System.out.println("addGoodsAction Row : " + row);
 
 	if (row == 1) { // insert 성공하면 파일업로드
 		// part -> is -> os -> 빈파일
@@ -65,6 +66,8 @@
 		
 		is.close();
 		os.close();
+		
+		response.sendRedirect("/shop/goods/goodsList.jsp");
 	
 	}  else {
 		
@@ -72,7 +75,6 @@
 		response.sendRedirect("/shop/goods/addGoodsForm.jsp");
 	}
 	
-	response.sendRedirect("/shop/goods/goodsList.jsp");
 	
 	//파일 삭제 API
 	/*
