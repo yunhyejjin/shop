@@ -23,7 +23,7 @@ public class DBHelper {
 		
 	}
 	
-	//public static void main(String[] args) throws Exception {
-		//DBHelper.getConnection();
-	//}  -->Properties(맵) 사용하여 문자열(ex: 개인정보) 외부노출 피하기 확인 메서드
+	public static void main(String[] args) throws Exception {
+		DBHelper.getConnection();
+	}  //-->Properties(맵) 사용하여 문자열(ex: 개인정보) 외부노출 피하기 확인 메서드
 }

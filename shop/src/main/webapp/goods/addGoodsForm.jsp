@@ -3,10 +3,10 @@
 <%@ page import="java.util.*"%>
 <%@ page import="shop.dao.*" %>
 <!--controller Layer -->
+
 <%
-	// 인증분기 : 세션변수 이름 - loginEmp	
 	if(session.getAttribute("loginEmp") == null) {
-		response.sendRedirect("/shop/emp/empLogForm.jsp");
+		response.sendRedirect("/shop/emp/empLoginForm.jsp");
 		return;
 	}
 %>
@@ -15,6 +15,7 @@
 <%
 	ArrayList<String> categoryList = addGoodsDAO.addGoods();
 	System.out.println("goods-categoryList : " + categoryList);
+	
 %>
 <!-- View Layer -->
 <!DOCTYPE html>

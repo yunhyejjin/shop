@@ -4,7 +4,7 @@
 <%@ page import="java.net.*"%>
 <%@ page import="java.io.*" %>
 <%@ page import="java.nio.file.*" %>
-
+<%@ page import="shop.dao.*" %>
 <!--controller Layer -->
 <%
 	request.setCharacterEncoding("UTF-8");
@@ -14,12 +14,14 @@
 		return;
 	}
 %>
-
-<!-- Session 설정값 : 입력시 로그인 emp의 emp_id값이 필요해서 -->
 <%
+	//Session 설정값 : 입력시 로그인 emp의 emp_id값이 필요해서
 	// 세션변수 이름 - loginEmp
 	HashMap<String, Object> loginMember 
 		= (HashMap<String, Object>)(session.getAttribute("loginEmp"));
+	System.out.println(loginMember);
+	System.out.println(loginMember.get("empId"));
+	String empId = (String)loginMember.get("empId");
 %>
 
 <!--Model Layer -->
@@ -40,7 +42,6 @@
 	String filename = uuid.toString().replace("-", "");
 	filename = filename + ext;
 	
-
 	System.out.println("category : " + category);
 	System.out.println("goodsTitle : " + goodsTitle);
 	System.out.println("filename : " + filename);
@@ -48,30 +49,13 @@
 	System.out.println("goodsPrice : " + goodsPrice);
 	System.out.println("goodsAmount : " + goodsAmount);
 
-	Class.forName("org.mariadb.jdbc.Driver");
-	Connection conn = null;
-	PreparedStatement stmt = null;
-	ResultSet rs = null;
-
-	String sql = "insert into goods(category, emp_id, goods_title, filename, goods_content, goods_price, goods_amount, update_date, create_date) value(?,?,?,?,?,?,?,now(),now())";
-	conn = DriverManager.getConnection( // DB접속
-	"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	stmt = conn.prepareStatement(sql);
-	stmt.setString(1, category);
-	stmt.setString(2, (String) (loginMember.get("empId"))); //  Session 설정값
-	stmt.setString(3, goodsTitle);
-	stmt.setString(4, filename);
-	stmt.setString(5, goodsContent);
-	stmt.setString(6, goodsPrice);
-	stmt.setString(7, goodsAmount);
-
-	System.out.println("stmt 확인 :" + stmt);
-
-	int row = stmt.executeUpdate();
+	int row = addGoodsActionDAO.addGoodsAction(category, empId, goodsTitle, filename, goodsContent, goodsPrice, goodsAmount);
+	System.out.println(row);
 
 	if (row == 1) { // insert 성공하면 파일업로드
 		// part -> is -> os -> 빈파일
 		// 1)
+		System.out.println("상품등록성공");
 		InputStream is = part.getInputStream();
 		// 3)+ 2)
 		String filePath = request.getServletContext().getRealPath("upload");
@@ -81,25 +65,19 @@
 		
 		is.close();
 		os.close();
-	} 
+	
+	}  else {
+		
+		System.out.println("상품등록실패,다시확인해주세요");
+		response.sendRedirect("/shop/goods/addGoodsForm.jsp");
+	}
+	
+	response.sendRedirect("/shop/goods/goodsList.jsp");
+	
 	//파일 삭제 API
 	/*
 	File df = new File(filePath, rs.getString("filename"));
 	df.delete()
 	*/
 
-%>
-
-<!--controller Layer -->
-<%
-
-	if (row == 1) {
-		System.out.println("상품등록성공");
-	
-	} else {
-		System.out.println("상품등록실패,다시확인해주세요");
-		response.sendRedirect("/shop/goods/addGoodsForm.jsp");
-	}
-
-	response.sendRedirect("/shop/goods/goodsList.jsp");
 %>

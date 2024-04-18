@@ -61,6 +61,7 @@
 	
 	<div>
 		<a href="/shop/goods/updateGoodsForm.jsp">상품수정</a>
+		<a href="/shop/goods/deleteGoodsAction.jsp">상품삭제</a>
 	</div>
 
 </body>
