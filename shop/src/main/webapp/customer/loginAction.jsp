@@ -63,7 +63,7 @@
 		System.out.println("login-mail : " + (String)m.get("customerMail"));
 		System.out.println("login-pw : " + (String)m.get("customerPw"));
 		
-		response.sendRedirect("/shop/customer/goodsList.jsp");
+		response.sendRedirect("/shop/customer/customerGoodsList.jsp");
 		
 	} else {
 		System.out.println("로그인 실패");
