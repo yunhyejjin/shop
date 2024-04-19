@@ -18,7 +18,6 @@
 			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	stmt = conn.prepareStatement(sql);
 	stmt.setString(1,checkMail);
-	System.out.println("stmt : " + stmt);
 	
 	rs = stmt.executeQuery();
 	

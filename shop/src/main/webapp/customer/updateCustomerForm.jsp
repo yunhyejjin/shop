@@ -71,7 +71,7 @@
 	<hr>
 	
 	<div>
-		<a href="/shop/customer/customerPage.jsp">
+		<a href="/shop/customer/customerOne.jsp">
 			<button type="submit">마이페이지</button>
 		</a>
 	</div>

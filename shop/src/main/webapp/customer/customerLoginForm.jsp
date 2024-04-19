@@ -23,7 +23,7 @@
 		<h1>LOGIN</h1>
 	</div>
 	
-	<form method="post" action="/shop/customer/loginAction.jsp">
+	<form method="post" action="/shop/customer/customerLoginAction.jsp">
 		<div>
 			mail :
 			<input type="text" name="customerMail">

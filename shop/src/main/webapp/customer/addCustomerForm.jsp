@@ -37,7 +37,7 @@
 	<!-- mail 중복확인 -->
 	<form method="post" action="/shop/customer/checkAction.jsp">
 		<div>
-			mail확인 :
+			메일확인 :
 			<input type="text" name="checkMail" value="<%=checkMail%>">
 			<button type="submit">중복확인</button>
 			<span>&nbsp;<%=msg%></span>		
@@ -47,7 +47,7 @@
 	<form method="post" action="/shop/customer/addCustomerAction.jsp">
 		
 		<div>
-			mail : 
+			메일(ID) : 
 			<%
 				if(ck.equals("O")) { //checkMail equals.O면 출력 
 			%>				
@@ -62,22 +62,22 @@
 		</div>
 		
 		<div>
-			pw : 
+			비밀번호 : 
 			<input type="password" name="pw">
 		</div>
 		
 		<div>
-			name :
+			이름 :
 			<input type="text"	name="name">
 		</div>
 		
 		<div>
-			birth :
+			생년월일 :
 			<input type="date"	name="birth">
 		</div>
 		
 		<div>
-			gender :
+			성별 :
 			<input type="radio" name="gender" value="남">남자
 			<input type="radio" name="gender" value="여">여자
 		</div>

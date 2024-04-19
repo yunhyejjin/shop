@@ -2,8 +2,7 @@
 <%@ page import="shop.dao.*" %>
 
 <%
-	// active 변환값 받기
-	
+	// active 변환값 받기	
 	String empId = request.getParameter("empId");
 	String active = request.getParameter("active");
 	
@@ -12,6 +11,7 @@
 	
 	if(active.equals("OFF")) {
 		active = "ON";
+	
 	} else {
 		active = "OFF";
 	}

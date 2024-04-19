@@ -3,6 +3,6 @@
 <%
 	
 	session.invalidate(); //  세션 공간 모두 초기화 (포맷)
-	response.sendRedirect("/shop/customer/loginForm.jsp");
+	response.sendRedirect("/shop/customer/customerLoginForm.jsp");
 
 %>

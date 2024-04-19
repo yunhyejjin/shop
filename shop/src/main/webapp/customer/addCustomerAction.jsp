@@ -30,12 +30,13 @@
 	stmt.setString(4,birth);
 	stmt.setString(5,gender);
 	
-	System.out.println(stmt);
+	System.out.println("stmt : " + stmt);
 	
 	int row = stmt.executeUpdate();
+	
 	if(row == 1) {
 		System.out.println("회원가입성공");
-		response.sendRedirect("/shop/customer/loginForm.jsp");
+		response.sendRedirect("/shop/customer/customerLoginForm.jsp");
 	
 	} else {
 		System.out.println("회원가입실패");

@@ -45,7 +45,7 @@
 <body>
 	<!-- 메인메뉴 -->
 	<div>
-		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
+		<jsp:include page="/inc/empMenu.jsp"></jsp:include>
 	</div>
 	
 	<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>

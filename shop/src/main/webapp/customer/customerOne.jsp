@@ -2,14 +2,14 @@
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
 <%
-	
+	//인증분기 : 세션변수 이음 - loginCustomer	
 	if(session.getAttribute("loginCustomer") == null) {
 		response.sendRedirect("/shop/customer/customerGoodsList.jsp");
 		return;
 	}
 %>
-<%
-	
+
+<%	
 	String sql = " select * from customer";
 	
 	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
@@ -21,7 +21,6 @@
 			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
 	stmt = conn.prepareStatement(sql); 
 	rs = stmt.executeQuery();
-	
 	
 %>
 <!DOCTYPE html>
@@ -48,16 +47,17 @@
 			<input type="datetime" name="birth" value="<%=rs.getString("birth")%>" readonly="readonly">
 			
 			<div>gender</div>
+			
 			<%
 				if(rs.getString("gender").equals("남")){
 			%>
-				<input type="radio" name="남" checked> 남
+				<input type="radio" name="남" checked="checked"> 남
 				<input type="radio" name="여"> 여 
 			<% 	
-				}else{	
+				}else if(rs.getString("gender").equals("여")) {	
 			%>
 				<input type="radio" name="남"> 남
-				<input type="radio" name="여" checked> 여 
+				<input type="radio" name="여" checked="checked"> 여 
 			<%
 				}
 			%>

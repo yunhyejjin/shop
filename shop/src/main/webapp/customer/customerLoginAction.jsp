@@ -7,9 +7,9 @@
 	// 인증분기 : 세션변수 이름 - loginCustomer
 	//String loginCustomer = (String)(session.getAttribute("loginCustomer"));
 	//System.out.println("loginCustomer(session) : " + loginCustomer);
-	
+	// 로그인을 한 적이 없으면 null(초기화값)로그아웃상태, null이 아니면 goodsList로 넘어감 
 	if(session.getAttribute("loginCustomer") != null) {
-		response.sendRedirect("/shop/customer/goodsList.jsp");
+		response.sendRedirect("/shop/customer/customerGoodsList.jsp");
 		return;
 	}
 %>
@@ -27,6 +27,7 @@
 	*/
 	
 	String sql="select * from customer where mail =? and pw = password(?)";
+	
 	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
 	Connection conn = null;
 	PreparedStatement stmt = null;
@@ -39,13 +40,13 @@
 	stmt.setString(2,customerPw);
 	rs = stmt.executeQuery(); // 쿼리문
 	
-	System.out.println(rs);
+	System.out.println("rs : " + rs); //쿼리출력
 %>
 
 <%	
 	/*
-		실패 / customer/LoginForm.jsp	
-		성공 / customer/goodsList.jsp	
+		실패 / customer/customerLoginForm.jsp	
+		성공 / customer/customerGoodsList.jsp	
 	*/
 	
 	if(rs.next()) {
@@ -68,7 +69,7 @@
 	} else {
 		System.out.println("로그인 실패");
 		String errMsg = URLEncoder.encode("아이디와 비밀번호를 확인해주세요.", "utf-8");
-		response.sendRedirect("/shop/customer/LoginForm.jsp?=errMsg" +errMsg);	
+		response.sendRedirect("/shop/customer/customerLoginForm.jsp?=errMsg" +errMsg);	
 		
 	}
 	

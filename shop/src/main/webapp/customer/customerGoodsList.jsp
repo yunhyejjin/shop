@@ -71,7 +71,7 @@
 <body>
 	<!-- 메인메뉴 -->
 	<div><a href="/shop/customer/customerLogout.jsp">로그아웃</a></div>
-	<div><a href="/shop/customer/customerPage.jsp">마이페이지</a></div>
+	<div><a href="/shop/customer/customerOne.jsp">마이페이지</a></div>
 	<!-- 서브메뉴 카테고리별 상품리스트-->
 	<nav class="navbar navbar-expand-sm bg-danger justify-content-center">
 		<div class="container">

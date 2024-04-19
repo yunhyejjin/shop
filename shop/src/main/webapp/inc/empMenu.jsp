@@ -10,9 +10,8 @@
 <div>
 	<span>
 		<!-- 개인정보보기 -->
-		<a href="/shop/emp/empOne.jsp">
-			<%=(String)(loginMember.get("empName"))%>님
-		</a>반갑습니다
+		
+			<%=(String)(loginMember.get("empName"))%>님 반갑습니다
 	</span>
 </div>
 

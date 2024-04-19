@@ -15,6 +15,7 @@ public class EmpDAO {
 	
 	// 호출코드 HashMap<String, Object> m = EmpDAO.empLogin("admin", "1234");
 	public static HashMap<String, Object> empLogin(String empId, String empPw) throws Exception {
+		// 초기화
 		HashMap<String, Object> resultMap = null;
 		
 		// DB 접근

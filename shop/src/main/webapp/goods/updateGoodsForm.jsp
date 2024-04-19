@@ -50,7 +50,7 @@
 <body>
 	<!-- 메인메뉴 -->
 	<div>
-		<jsp:include page="/emp/inc/empMenu.jsp"></jsp:include>
+		<jsp:include page="/inc/empMenu.jsp"></jsp:include>
 	</div>
 
 	<h1>상품등록</h1>
