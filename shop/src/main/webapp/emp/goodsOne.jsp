@@ -60,8 +60,8 @@
 	%>
 	
 	<div>
-		<a href="/shop/goods/updateGoodsForm.jsp?goodsNo=<%=goodsNo%>">상품수정</a>
-		<a href="/shop/goods/deleteGoodsAction.jsp?goodsNo=<%=goodsNo%>">상품삭제</a>
+		<a href="/shop/emp/updateGoodsForm.jsp?goodsNo=<%=goodsNo%>">상품수정</a>
+		<a href="/shop/emp/deleteGoodsAction.jsp?goodsNo=<%=goodsNo%>">상품삭제</a>
 	</div>
 
 </body>

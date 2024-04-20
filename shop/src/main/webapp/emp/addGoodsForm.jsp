@@ -32,7 +32,7 @@
 
 	<h1>상품등록</h1>
 	
-	<form method="post" action="/shop/goods/addGoodsAction.jsp" 
+	<form method="post" action="/shop/emp/addGoodsAction.jsp" 
 			enctype="multipart/form-data">
 		
 		<div>
@@ -58,6 +58,11 @@
 		<div>
 		 	goodsImage :
 		 	<input type="file" name="goodsImg">
+		</div>
+		
+		<div>
+		 	goodsAmount :
+		 	<input type="number" name="goodsAmount">
 		</div>
 		
 		<div>

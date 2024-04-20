@@ -21,9 +21,9 @@
 
 <%
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
-	System.out.println("goodsNo(update) : " + goodsNo);
-
-	String sql = "select * from goods WHERE goods_no = ?";	
+	System.out.println("goodsNo : " + goodsNo);
+	
+	String sql = "select * from goods where goods_no = ? ";	
 	
 	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
 	Connection conn = null;
@@ -53,9 +53,9 @@
 		<jsp:include page="/inc/empMenu.jsp"></jsp:include>
 	</div>
 
-	<h1>상품등록</h1>
+	<h1>상품수정</h1>
 	
-	<form method="post" action="/shop/goods/addGoodsAction.jsp" 
+	<form method="post" action="/shop/emp/updateGoodsAction.jsp" 
 			enctype="multipart/form-data">
 		
 		<div>
@@ -74,28 +74,41 @@
 		
 		<!-- empId값음 action쪽에서 세션변수에서 바인딩(가져오기) -->
 		<div>
+		 	goodsNo :
+		 	<input value="<%=rs.getInt("goods_no")%>" name="goodsNo" readonly="readonly">
+		</div>
+		
+		<div>
 		 	goodsTitle :
-		 	<input type="text" name="goodsTitle">
+		 	<input type="text" name="goodsTitle" value="<%=rs.getString("goods_title")%>">
 		</div>
 		
 		<div>
 		 	goodsImage :
-		 	<input type="file" name="goodsImg">
+		 	<input type="hidden" name="goodsImg" value="<%=rs.getString("filename")%>">
+		 	<input type="file" name="newImg">
+		</div>
+		
+		<div>
+		 	goodsAmount :
+		 	<input type="number" name="goodsAmount" value="<%=rs.getInt("goods_amount")%>">
+		 	
 		</div>
 		
 		<div>
 		 	goodsPrice :
-		 	<input type="number" name="goodsPrice">
+		 	<input type="number" name="goodsPrice" value="<%=rs.getInt("goods_price")%>">
 		</div>
 		
 		<div>
 		 	goodsContent :
-		 	<textarea rows="5" cols="50" name="goodsContent"></textarea>
+		 	<textarea rows="5" cols="50" name="goodsContent" value="<%=rs.getString("goods_content")%>"></textarea>
 		</div>
 		
 		<div>
 			<button type="submit">상품수정</button>
 		</div>
+		
 	</form>
 </body>
 </html>

@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ page import="java.util.*"%>
-<%@ page import="java.sql.*" %>
 <%@ page import="java.net.*"%>
 <%@ page import="java.io.*" %>
 <%@ page import="java.nio.file.*" %>
@@ -31,6 +30,7 @@
   	String category = request.getParameter("category");
 	String goodsTitle = request.getParameter("goodsTitle");
 	String goodsContent = request.getParameter("goodsContent");
+	int goodsAmount = Integer.parseInt(request.getParameter("goodsAmount"));
 	int goodsPrice = Integer.parseInt(request.getParameter("goodsPrice"));
 	
 	Part part = request.getPart("goodsImg");
@@ -48,9 +48,10 @@
 	System.out.println("goodsTitle(상품등록) : " + goodsTitle);
 	System.out.println("filename(상품등록) : " + filename);
 	System.out.println("goodsContent(상품등록) : " + goodsContent);
+	System.out.println("goodsAmount(상품등록) : " + goodsAmount);
 	System.out.println("goodsPrice(상품등록) : " + goodsPrice);
 
-	int row = addGoodsActionDAO.addGoodsAction(category, empId, goodsTitle, filename, goodsContent, goodsPrice);
+	int row = addGoodsActionDAO.addGoodsAction(category, empId, goodsTitle, filename, goodsContent, goodsAmount, goodsPrice);
 	System.out.println("addGoodsAction Row : " + row);
 
 	if (row == 1) { // insert 성공하면 파일업로드
@@ -67,12 +68,12 @@
 		is.close();
 		os.close();
 		
-		response.sendRedirect("/shop/goods/goodsList.jsp");
+		response.sendRedirect("/shop/emp/goodsList.jsp");
 	
 	}  else {
 		
 		System.out.println("상품등록실패,다시확인해주세요");
-		response.sendRedirect("/shop/goods/addGoodsForm.jsp");
+		response.sendRedirect("/shop/emp/addGoodsForm.jsp");
 	}
 	
 	

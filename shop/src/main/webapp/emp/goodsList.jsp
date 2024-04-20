@@ -68,7 +68,7 @@
 	<div><a href="/shop/emp/empLogout.jsp">로그아웃</a></div>
 	
 	<div>
-		<a href="/shop/goods/addGoodsForm.jsp">상품등록</a>
+		<a href="/shop/emp/addGoodsForm.jsp">상품등록</a>
 	</div>
 	
 	<!-- 서브메뉴 카테고리별 상품리스트-->
@@ -76,13 +76,13 @@
 		<div class="container">
 			<ul class="navbar-nav">
 						 	<li class="nav-item">
-								<a class="nav-link" href="/shop/goods/goodsList.jsp">전체</a>
+								<a class="nav-link" href="/shop/emp/goodsList.jsp">전체</a>
 							</li>
 				<%
 						for(HashMap<String,Object> m : TotalList) {		
 				%>
 							<li class="nav-item">
-								<a class="nav-link" href="/shop/goods/goodsList.jsp?category=<%=(String)(m.get("category"))%>">
+								<a class="nav-link" href="/shop/emp/goodsList.jsp?category=<%=(String)(m.get("category"))%>">
 									<%=(String)(m.get("category"))%>(<%=(Integer)(m.get("cnt"))%>)
 								</a>
 							</li>			
@@ -101,7 +101,7 @@
 			%>	
 					<div class="col-4" >
 						<div class ="card m-3" style="width:500px">
-							<a href="/shop/goods/goodsOne.jsp?goodsNo=<%=(Integer)(m1.get("goodsNo"))%>">
+							<a href="/shop/emp/goodsOne.jsp?goodsNo=<%=(Integer)(m1.get("goodsNo"))%>">
 								<img class="card-img-top" src="/shop/upload/<%=(String)(m1.get("fileName"))%>">
 							</a>
 							<div class ="card-body">
@@ -125,19 +125,19 @@
 				if(currentPage > 1) {
 			%>
 					<li class="page-item">
-						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1&category=<%=category%>">처음페이지</a>
+						<a class="page-link" href="/shop/emp/goodsList.jsp?currentPage=1&category=<%=category%>">처음페이지</a>
 					</li>
 					<li class="page-item">	
-						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>">이전페이지</a>
+						<a class="page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>">이전페이지</a>
 					</li>				
 			<%		
 				} else {
 			%>
 					<li class="page-item disabled">
-						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=1&category=<%=category%>">처음페이지</a>
+						<a class="page-link" href="/shop/emp/goodsList.jsp?currentPage=1&category=<%=category%>">처음페이지</a>
 					</li>
 					<li class="page-item disabled">
-						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>">이전페이지</a>
+						<a class="page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage-1%>&category=<%=category%>">이전페이지</a>
 					</li>
 			<%		
 				}
@@ -147,10 +147,10 @@
 				if(currentPage < lastPage) {
 			%>
 					<li class="page-item">
-						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>">다음페이지</a>
+						<a class="page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=currentPage+1%>&category=<%=category%>">다음페이지</a>
 					</li>
 					<li class="page-item">
-						<a class="page-link" href="/shop/goods/goodsList.jsp?currentPage=<%=lastPage%>&category=<%=category%>">마지막페이지</a>
+						<a class="page-link" href="/shop/emp/goodsList.jsp?currentPage=<%=lastPage%>&category=<%=category%>">마지막페이지</a>
 					</li>
 			<% 	
 				}

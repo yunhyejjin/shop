@@ -33,12 +33,12 @@
 	row = stmt.executeUpdate();
 	
 	if(row == 1) {
-		System.out.println("추가완료");
+		System.out.println("추가완료");	
 	
 	}else {
 		System.out.println("추가실패. 다시확인해주세요.");
-		response.sendRedirect("/shop/goods/categoryList.jsp");
+		response.sendRedirect("/shop/emp/categoryList.jsp");
 	}
 	
-	response.sendRedirect("/shop/goods/categoryList.jsp");
+	response.sendRedirect("/shop/emp/categoryList.jsp");
 %>

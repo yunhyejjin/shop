@@ -38,9 +38,9 @@
 	
 	}else {
 		System.out.println("삭제실패. 다시확인해주세요.");
-		response.sendRedirect("/shop/category/categoryList.jsp");
+		response.sendRedirect("/shop/emp/categoryList.jsp");
 	}
 	
-	response.sendRedirect("/shop/category/categoryList.jsp");
+	response.sendRedirect("/shop/emp/categoryList.jsp");
 %>
 

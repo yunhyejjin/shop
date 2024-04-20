@@ -34,10 +34,10 @@
 	
 	if(row == 1) { //삭제할 게시글은 1개니까...
 		System.out.println("goods 삭제성공");
-		response.sendRedirect("/shop/goods/goodsList.jsp");
+		response.sendRedirect("/shop/emp/goodsList.jsp");
 	} else {
 		System.out.println("goods 삭제실패");
-		response.sendRedirect("/shop/goodsOne.jsp?goodsNo=" + goodsNo);
+		response.sendRedirect("/shop/emp/goodsOne.jsp?goodsNo=" + goodsNo);
 	}
 	
 %>
