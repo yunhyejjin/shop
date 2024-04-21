@@ -60,16 +60,7 @@
 		
 		<div>
 			category :
-			<select name="category">
-				<option value="">선택</option>
-				<%
-					for(String s : categoryList){
-				%>
-					 <option value="<%=s%>"><%=s%></option>
-				<% 		
-					}
-				%>		
-			</select>
+			<input value="<%=rs.getString("category")%>" name="category" readonly="readonly">
 		</div>
 		
 		<!-- empId값음 action쪽에서 세션변수에서 바인딩(가져오기) -->
@@ -86,7 +77,7 @@
 		<div>
 		 	goodsImage :
 		 	<input type="hidden" name="goodsImg" value="<%=rs.getString("filename")%>">
-		 	<input type="file" name="newImg">
+
 		</div>
 		
 		<div>

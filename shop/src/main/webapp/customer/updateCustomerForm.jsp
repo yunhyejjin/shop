@@ -44,10 +44,13 @@
 <body>
 	<h1>회원정보수정</h1>
 	
+	<%
+		if(rs.next()){
+	%>
 	<form method="post" action="/shop/customer/updateCustomerAction.jsp">
 		
 		<div>mail</div>
-		<input type="text" name="mail" readonly="readonly">
+		<input type="text" name="mail" value="<%=rs.getString("mail")%>" readonly="readonly">
 		
 		<div>pw</div>
 		<input type="password" name="pw">
@@ -67,7 +70,9 @@
 		</div>
 	
 	</form>
-	
+	<%
+		}
+	%>
 	<hr>
 	
 	<div>

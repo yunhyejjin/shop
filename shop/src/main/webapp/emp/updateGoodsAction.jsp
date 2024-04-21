@@ -49,6 +49,13 @@
 	String newImg = "";
 	Part part = request.getPart("newImg");
 	
+	String originalName = part.getSubmittedFileName();
+	int dotIdx = originalName.lastIndexOf(".");
+	String ext = originalName.substring(dotIdx);// .png
+	
+	UUID uuid = UUID.randomUUID(); // 랜덤문자열(파일명)
+	filename = filename + ext;
+	
 	newImg = filename;
 	//디버깅
 	System.out.println("newImg : " + newImg);
