@@ -8,18 +8,16 @@
 		return;
 	}
 %>
+
 <%
-	String mail = request.getParameter("mail");
+	//입력값
 	String pw = request.getParameter("pw");
 	String name = request.getParameter("name");
-	String birth = request.getParameter("birth");
 	String gender = request.getParameter("gender");
 	
-	System.out.println("customer mail : " + mail);
-	System.out.println("customer pw : " + pw);
-	System.out.println("customer name : " + name);
-	System.out.println("customer birth : " + birth);
-	System.out.println("customer gender : " + gender);
+	System.out.println("customer pw(수정) : " + pw);
+	System.out.println("customer name(수정) : " + name);
+	System.out.println("customer gender(수정) : " + gender);
 	
 	String sql = "UPDATE customer SET pw = ?, name = ?, gender = ?";
 	
@@ -36,6 +34,17 @@
 	
 	int row = 0;
 	row = stmt.executeUpdate();
+	
+	
+	if(row == 1) {
+		System.out.println("추가완료");	
+	
+	}else {
+		System.out.println("추가실패. 다시확인해주세요.");
+		response.sendRedirect("/shop/customer/updateCustomerForm.jsp");
+	}
+	
+	response.sendRedirect("/shop/customer/customerOne.jsp");
 	
 	
 %>

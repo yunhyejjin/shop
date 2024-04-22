@@ -9,17 +9,13 @@
 	}
 %>
 <%
-	String mail = request.getParameter("mail");
-	String pw = request.getParameter("pw");
-	String name = request.getParameter("name");
-	String birth = request.getParameter("birth");
-	String gender = request.getParameter("gender");
-	
-	System.out.println("customer mail : " + mail);
-	System.out.println("customer pw : " + pw);
-	System.out.println("customer name : " + name);
-	System.out.println("customer birth : " + birth);
-	System.out.println("customer gender : " + gender);
+	// 요청값
+	String oneMail = request.getParameter("oneMail");
+	String oneBirth = request.getParameter("oneBirth");
+		
+	System.out.println("customer mail : " + oneMail);
+	System.out.println("customer birth : " + oneBirth);
+
 	
 	String sql = " select * from customer";
 	
@@ -59,11 +55,11 @@
 		<input type="text" name="name">
 		
 		<div>birth</div>
-		<input type="datetime" name="birth" readonly="readonly">
+		<input type="datetime" name="birth" value="<%=rs.getString("birth")%>" readonly="readonly">
 		
 		<div>gender</div>
-		<input type="radio" name="남"> 남
-		<input type="radio" name="여"> 여 
+		<input type="radio" name="gender" value="남"> 남
+		<input type="radio" name="gender" value="여"> 여 
 		
 		<div>
 			<button type="submit">수정하기</button>

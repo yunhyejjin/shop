@@ -11,14 +11,11 @@
 	}
 %>
 
-<%	
-	String mail = request.getParameter(mail);
-	String pw = request.getParameter(pw);
-
-	HashMap<String, Object> c = customerDAO.customerLogin(mail, pw);
-	System.out.println(c);
-	System.out.println(c.get("mail"));
-
+<%
+	HashMap<String, Object> loginCustomer 
+	= (HashMap<String, Object>)(session.getAttribute("loginCustomer"));
+	System.out.println(loginCustomer);
+	System.out.println("loginCustomerMail : " + loginCustomer.get("customerMail"));
 %>
 
 <!--controller Layer -->
@@ -80,12 +77,9 @@
 <body>
 	<!-- 메인메뉴 -->
 	<div><a href="/shop/customer/customerLogout.jsp">로그아웃</a></div>
-	<%
-		for(HashMap<String,Object> cl : c) {
-			
-		}
-	%>
-	<div><a href="/shop/customer/customerOne.jsp?mail=">마이페이지</a></div>
+	<div><a href="/shop/customer/customerOne.jsp?=<%=loginCustomer.get("customerMail")%>">마이페이지</a></div>
+
+	
 	<!-- 서브메뉴 카테고리별 상품리스트-->
 	<nav class="navbar navbar-expand-sm bg-danger justify-content-center">
 		<div class="container">
