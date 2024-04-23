@@ -26,18 +26,18 @@
 	}
 	
 	//전체 출력문
-	ArrayList<HashMap<String, Object>> TotalList = GoodsCntDAO.TotalList();
+	ArrayList<HashMap<String, Object>> TotalList = GoodsDAO.TotalList();
 	
 	System.out.println("TotalList(cnt) : " + TotalList);
 	
 	// 카테고리별 출력문
 	ArrayList<HashMap<String, Object>> goodsList = GoodsDAO.GoodsList(category, startRow, rowPerPage);
 	
-	System.out.println("goodsList : " + goodsList);
+	System.out.println("category/goodsList : " + goodsList);
 	
 	
 	//카테고리별 페이징 출력문
-	int totalRow = GoodsPageDAO.GoodsPage(category);
+	int totalRow = GoodsDAO.GoodsPage(category);
 	System.out.println("totalRow: " + totalRow);
 	
 	int lastPage = totalRow / rowPerPage; 

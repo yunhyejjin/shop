@@ -16,15 +16,15 @@
 %>
 
 <%
+	// DAO 요청값
 	String customerMail = request.getParameter("customerMail");
 	String customerPw = request.getParameter("customerPw");
-	
+	//디버깅
 	System.out.println("customerMail : " + customerMail);
 	System.out.println("customerPw : " + customerPw);
 	
-	HashMap<String, Object> loginCustomer = customerDAO.customerLogin(customerMail, customerPw); 
-	
-
+	HashMap<String, Object> loginCustomer = customerDAO.customerLogin(customerMail, customerPw); // 로그인한 customer mail,pw
+	System.out.println("loginCustomer(session) : " + loginCustomer);
 %>
 
 <%	
@@ -40,7 +40,7 @@
 		
 	} else {
 		System.out.println("로그인 성공");
-		session.setAttribute("loginCustomer", loginCustomer); // session이 "loginCustomer"
+		session.setAttribute("loginCustomer", loginCustomer); // session(속성명,값)이 "loginCustomer" 생성
 		response.sendRedirect("/shop/customer/customerGoodsList.jsp");
 	}
 	

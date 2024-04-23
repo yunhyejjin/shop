@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import = "java.sql.*" %>
 <%@ page import="java.util.*"%>
 <%@ page import= "java.net.*"%> 
 <%@ page import= "shop.dao.*" %>
@@ -15,31 +14,13 @@
 %>
 
 <%
-	ArrayList<String> categoryList = addGoodsDAO.addGoods();
-	System.out.println("goods-categoryList : " + categoryList);	
-%>
-
-<%
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
 	System.out.println("goodsNo : " + goodsNo);
 	
-	String sql = "select * from goods where goods_no = ? ";	
+	ArrayList<HashMap<String, Object>> goodsOne = GoodsDAO.goodsOne(goodsNo);	
+	System.out.println("goodsOne(update전) : " + goodsOne);
 	
-	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
-	Connection conn = null;
-	PreparedStatement stmt = null;
-	ResultSet rs = null;
-	
-	conn = DriverManager.getConnection( // DB접속
-			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	stmt = conn.prepareStatement(sql);
-	stmt.setInt(1,goodsNo);
-	System.out.println("stmt: " + stmt);
-	
-	rs = stmt.executeQuery();
-	
-	
-	if(rs.next()) {
+	for(HashMap g : goodsOne) {
 %>
 <!DOCTYPE html>
 <html>
@@ -60,40 +41,40 @@
 		
 		<div>
 			category :
-			<input value="<%=rs.getString("category")%>" name="category" readonly="readonly">
+			<input value="<%=(String)(g.get("category"))%>" name="category" readonly="readonly">
 		</div>
 		
 		<!-- empId값음 action쪽에서 세션변수에서 바인딩(가져오기) -->
 		<div>
 		 	goodsNo :
-		 	<input value="<%=rs.getInt("goods_no")%>" name="goodsNo" readonly="readonly">
+		 	<input value="<%=(Integer)(g.get("goodsNo"))%>" name="goodsNo" readonly="readonly">
 		</div>
 		
 		<div>
 		 	goodsTitle :
-		 	<input type="text" name="goodsTitle" value="<%=rs.getString("goods_title")%>">
+		 	<input type="text" name="goodsTitle" value="<%=(String)(g.get("goodsTitle"))%>">
 		</div>
 		
 		<div>
 		 	goodsImage :
-		 	<input type="hidden" name="goodsImg" value="<%=rs.getString("filename")%>">
-
+		 	<img src="/shop/upload/<%=(String)(g.get("goodsImg"))%>"> <!-- 불러올 경로가 없었어..... -->
+		 	<input type="file" name="newImg">
 		</div>
 		
 		<div>
 		 	goodsAmount :
-		 	<input type="number" name="goodsAmount" value="<%=rs.getInt("goods_amount")%>">
+		 	<input type="number" name="goodsAmount" value="<%=(Integer)(g.get("goodsAmount"))%>">
 		 	
 		</div>
 		
 		<div>
 		 	goodsPrice :
-		 	<input type="number" name="goodsPrice" value="<%=rs.getInt("goods_price")%>">
+		 	<input type="number" name="goodsPrice" value="<%=(Integer)(g.get("goodsPrice"))%>">
 		</div>
 		
 		<div>
 		 	goodsContent :
-		 	<textarea rows="5" cols="50" name="goodsContent" value="<%=rs.getString("goods_content")%>"></textarea>
+		 	<textarea rows="5" cols="50" name="goodscontent"></textarea>
 		</div>
 		
 		<div>

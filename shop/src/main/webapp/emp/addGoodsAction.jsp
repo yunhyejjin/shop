@@ -41,7 +41,7 @@
 	
 	UUID uuid = UUID.randomUUID(); // 랜덤문자열(파일명)
 	String filename = uuid.toString().replace("-", "");
-	filename = filename + ext;
+	filename = filename + ext; // 불러오는 사진명
 	
 	//디버깅
 	System.out.println("category(상품등록) : " + category);
@@ -51,7 +51,7 @@
 	System.out.println("goodsAmount(상품등록) : " + goodsAmount);
 	System.out.println("goodsPrice(상품등록) : " + goodsPrice);
 
-	int row = addGoodsActionDAO.addGoodsAction(category, empId, goodsTitle, filename, goodsContent, goodsAmount, goodsPrice);
+	int row = GoodsDAO.addGoodsAction(category, empId, goodsTitle, filename, goodsContent, goodsAmount, goodsPrice);
 	System.out.println("addGoodsAction Row : " + row);
 
 	if (row == 1) { // insert 성공하면 파일업로드

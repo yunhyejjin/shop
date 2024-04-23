@@ -17,6 +17,11 @@
 	int totalAmount = Integer.parseInt(request.getParameter("totalAmount"));
 	int totalPrice = Integer.parseInt(request.getParameter("totalPrice"));
 	
+	System.out.println("orderNo : " + ordersNo);
+	System.out.println("mail : " + mail);
+	System.out.println("goodsNo : " + goodsNo);
+	System.out.println("totalAmount : " + totalAmount);
+	System.out.println("totalPrice : " + totalPrice);
 	
 %>
 <!DOCTYPE html>
@@ -26,7 +31,7 @@
 <title></title>
 </head>
 <body>
-	<h1>주문창</h1>
+	<h1>주문/결제</h1>
 	
 	<form method="post" action="/shop/orders/ordersAction.jsp">
 		

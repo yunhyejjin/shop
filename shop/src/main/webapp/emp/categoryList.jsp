@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*" %>
 <%@ page import="java.util.*"%>
+<%@ page import="shop.dao.*" %>
 
 <%
 	// 인증분기 : 세션변수 이름 - loginEmp	
@@ -9,30 +9,8 @@
 		return;
 	}
 %>
-
 <%
-	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
-	
-	Connection conn = null;
-	PreparedStatement stmt1 = null;
-	ResultSet rs1 = null;
-	
-	conn = DriverManager.getConnection( // DB접속
-			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	
-	String sql1 = "select * from category";
-	stmt1 = conn.prepareStatement(sql1);
-	rs1 = stmt1.executeQuery();
-	
-	ArrayList<HashMap<String, Object>> categoryList = new ArrayList<HashMap<String, Object>>();
-	
-	while(rs1.next()) {
-		HashMap<String, Object> h = new HashMap<String, Object>();
-		h.put("category", rs1.getString("category"));
-		h.put("createDate", rs1.getString("create_date"));
-		categoryList.add(h);
-	}
-	
+	ArrayList<HashMap<String, Object>> categoryList = CategoryDAO.categoryList();
 	System.out.println("categoryList : " + categoryList);
 %>
 
@@ -67,7 +45,7 @@
 			%>
 					<tr>
 						<td><%=(String)(h.get("category"))%></td>
-						<td><%=(String)(h.get("createDate"))%></td>
+						<td><%=(String)(h.get("createdate"))%></td>
 						<td>
 							<a href="/shop/emp/deleteCategoryAction.jsp?category=<%=(String)(h.get("category"))%>">
 								<button type="submit">삭제</button>

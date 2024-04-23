@@ -4,8 +4,8 @@
 
 <%
 	//인증분기 : 세션변수 이음 - loginCustomer	
-	String loginCustomer = (String)(session.getAttribute("loginCustomer"));
-	System.out.println("loginCustomer(session) : " + loginCustomer);
+	//String loginCustomer = (String)(session.getAttribute("loginCustomer"));
+	//System.out.println("loginCustomer(session) : " + loginCustomer);
 	// loginForm페이지는 로그아웃상태에서만 출력되는 페이지(회원이 아닐경우에도) / goodsList.jsp는 로그인상태만 가능
 	if(session.getAttribute("loginCustomer") != null) {
 		response.sendRedirect("/shop/customer/customerGoodsList.jsp");

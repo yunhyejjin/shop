@@ -19,7 +19,7 @@
 	System.out.println("변환후 empId : " + empId);
 	System.out.println("변환후 active : " + active);
 
-	int row = EmpActiveDAO.EmpActive(active, empId);
+	int row = EmpDAO.EmpActive(active, empId);
 	System.out.println(row);
 	
 	if(row == 1) {

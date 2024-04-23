@@ -13,9 +13,7 @@
 
 <!--Model Layer -->
 <%
-	ArrayList<String> categoryList = addGoodsDAO.addGoods();
-	System.out.println("goods-categoryList : " + categoryList);
-	
+	ArrayList<HashMap<String, Object>> categorylist = CategoryDAO.categoryList();
 %>
 <!-- View Layer -->
 <!DOCTYPE html>
@@ -40,9 +38,9 @@
 			<select name="category">
 				<option value="">선택</option>
 				<%
-					for(String s : categoryList){
+					for(HashMap<String, Object> s : categorylist){
 				%>
-					 <option value="<%=s%>"><%=s%></option>
+					 <option value="<%=(String)(s.get("category"))%>"><%=(String)(s.get("category"))%></option>
 				<% 		
 					}
 				%>		

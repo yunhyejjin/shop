@@ -69,7 +69,7 @@
 
 	
 	//JDBC API 종속된 자료구조 모델 ResultSet -> 기본 API 자료구조(ArryList)로 변결
-	ArrayList<HashMap<String, Object>> empList = EmpListDAO.EmpList(startRow, rowPerPage);
+	ArrayList<HashMap<String, Object>> empList = EmpDAO.EmpList(startRow, rowPerPage);
 	
 	// ResultSet -> ArrayList<HashMap<String, Object>> 
 
