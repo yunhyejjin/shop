@@ -73,7 +73,7 @@ public class GoodsDAO {
 	}
 	
 	// addGoodsAction.jsp
-	public static int addGoodsAction(String category, String empId, String goodsTitle, String filename, 
+	public static int addGoodsAction(String category, String empId, String goodsTitle, String fileName, 
 			String goodsContent, int goodsAmount, int goodsPrice) throws Exception {
 		
 		int row = 0;
@@ -85,7 +85,7 @@ public class GoodsDAO {
 		stmt.setString(1, category);
 		stmt.setString(2, empId); //  Session 설정값
 		stmt.setString(3, goodsTitle);
-		stmt.setString(4, filename);
+		stmt.setString(4, fileName);
 		stmt.setString(5, goodsContent);
 		stmt.setInt(6, goodsAmount);
 		stmt.setInt(7, goodsPrice);
@@ -141,7 +141,7 @@ public class GoodsDAO {
 	}
 	
 	//updateGoodsAction.jsp
-	public static int updateGoods(int goodsNo, String goodsTitle, String filename, int goodsPrice, String goodsContent)throws Exception {
+	public static int updateGoods(int goodsNo, String goodsTitle, String fileName, int goodsPrice, String goodsContent)throws Exception {
 		int row = 0;
 		
 		Connection conn = DBHelper.getConnection();	
@@ -149,7 +149,7 @@ public class GoodsDAO {
 				+ " WHERE goods_no =?";
 		PreparedStatement stmt = conn.prepareStatement(sql); 
 		stmt.setString(1,goodsTitle);
-		stmt.setString(2,filename);
+		stmt.setString(2,fileName);
 		stmt.setInt(3,goodsPrice);
 		stmt.setString(4,goodsContent);
 		stmt.setInt(5,goodsNo);

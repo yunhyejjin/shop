@@ -57,8 +57,9 @@
 		
 		<div>
 		 	goodsImage :
-		 	<img src="/shop/upload/<%=(String)(g.get("goodsImg"))%>"> <!-- 불러올 경로가 없었어..... -->
-		 	<input type="file" name="newImg">
+		 	<img src="/shop/upload/<%=(String)(g.get("fileName"))%>"> <!-- 불러올 경로가 없었어..... -->
+		 	<input type="file" name="newImg" >
+		 	<input type="hidden" name="fileName" value="<%=(String)(g.get("fileName"))%>"><!-- hidden: 폼에서 보여지진 않지만 필요한 값을 액션으로 넘겨줄때 사용 -->
 		</div>
 		
 		<div>
@@ -74,7 +75,7 @@
 		
 		<div>
 		 	goodsContent :
-		 	<textarea rows="5" cols="50" name="goodscontent"></textarea>
+		 	<textarea rows="5" cols="50" name="goodsContent"><%=(String)(g.get("goodsContent"))%></textarea>
 		</div>
 		
 		<div>

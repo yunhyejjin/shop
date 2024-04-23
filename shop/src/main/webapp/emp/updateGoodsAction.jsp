@@ -29,7 +29,7 @@
 	
 	int goodsNo = Integer.parseInt(request.getParameter("goodsNo"));
 	String goodsTitle = request.getParameter("goodsTitle");
-	String filename = request.getParameter("filename");
+	String fileName = request.getParameter("fileName");
 	int goodsPrice = Integer.parseInt(request.getParameter("goodsPrice"));
 	String goodsContent = request.getParameter("goodsContent");
 	
@@ -37,26 +37,32 @@
 	System.out.println("empId(수정사원) : " + loginMember.get("empId"));
 	System.out.println("goodsNo(update) : " + goodsNo);	
 	System.out.println("goodsTitle(update) : " + goodsTitle);
-	System.out.println("filename(update) : " + filename);
+	System.out.println("filename(update) : " + fileName);
 	System.out.println("goodsPrice(update) : " + goodsPrice);
 	System.out.println("goodsContent(update) : " + goodsContent);
 	
 	//새로 수정할 이미지
 	String newImg = "";
 	Part part = request.getPart("newImg");
+	System.out.println(part);
+
+
+		String originalName = part.getSubmittedFileName();
+		
+		int dotIdx = originalName.lastIndexOf(".");
+		String ext = originalName.substring(dotIdx);// .png
+		
+		UUID uuid = UUID.randomUUID(); // 랜덤문자열(파일명)
+		/* fileName = fileName + ext; */
+		fileName = originalName; 
+
 	
-	String originalName = part.getSubmittedFileName();
-	int dotIdx = originalName.lastIndexOf(".");
-	String ext = originalName.substring(dotIdx);// .png
 	
-	UUID uuid = UUID.randomUUID(); // 랜덤문자열(파일명)
-	filename = filename + ext;
-	
-	newImg = filename;
+	newImg = fileName;
 	//디버깅
 	System.out.println("newImg : " + newImg);
 	
-	int row = GoodsDAO.updateGoods(goodsNo, goodsTitle, filename, goodsPrice, goodsContent);
+	int row = GoodsDAO.updateGoods(goodsNo, goodsTitle, newImg, goodsPrice, goodsContent);
 	System.out.println("updateGoods Row : " + row);
 
 	
