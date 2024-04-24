@@ -48,6 +48,7 @@
 							<p class="card-text">상품내용:<%=(String)(c.get("goodsContent"))%></p>
 							<p class="card-text">가격:<%=(Integer)(c.get("goodsPrice"))%></p>
 						</div>
+						<div><a href="/shop/customer/customerOrdersForm.jsp?=<%=goodsNo%>">주문하기</a></div>
 					</div>	
 				</div>		
 			</div>
@@ -58,7 +59,6 @@
 	%>
 	
 	<div>
-		<a href="/shop/orders/ordersForm.jsp">주문하기</a>
 		<a href="/shop/customer/customerGoodsList.jsp">리스트로</a>
 	</div>
 

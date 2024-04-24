@@ -32,12 +32,12 @@
 	<form method="post" action="/shop/emp/empLoginAction.jsp">
 		<div>
 			ID :
-			<input type="text" name="empId" value="admin" > <!-- value 값줘서 로그인 고정 -->
+			<input type="text" name="empId" > <!-- value 값줘서 로그인 고정 -->
 		</div>
 		
 		<div>
 			PW :
-			<input type="password" name="empPw" value="1234"> <!-- value 값줘서 로그인 고정 -->
+			<input type="password" name="empPw"> <!-- value 값줘서 로그인 고정 -->
 		</div>
 		<hr>
 		<div>

@@ -14,7 +14,7 @@
 	}
 	
 	// controller
-	// 요청값
+	// emploginForm에서 받은 값
 	String empId = request.getParameter("empId"); 
 	String empPw = request.getParameter("empPw"); 
 	
@@ -22,7 +22,7 @@
 	System.out.println("empPw : " + empPw);
 		
 	HashMap<String, Object> loginEmp = EmpDAO.empLogin(empId, empPw);
-	
+	System.out.println("loginEmp : " + loginEmp);
 	
 	//controller
 	if(loginEmp == null) {
@@ -30,10 +30,9 @@
 		String errMsg = URLEncoder.encode("아이디와 비밀번호를 확인해주세요.", "utf-8");
 		response.sendRedirect("/shop/emp/empLoginForm.jsp?=errMsg" +errMsg);
 
-
 	} else {
 		System.out.println("로그인 성공");
-		session.setAttribute("loginEmp", loginEmp); // session이 "loginEmp"
+		session.setAttribute("loginEmp", loginEmp); // session.setAttribute->"loginEmp" session생성
 		response.sendRedirect("/shop/emp/empList.jsp");
 		
 	}

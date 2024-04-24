@@ -1,6 +1,6 @@
 package shop.dao;
 
 public class OrderDAO {
-	//public static 
+	//public static int
 
 }

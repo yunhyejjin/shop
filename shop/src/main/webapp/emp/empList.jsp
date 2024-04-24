@@ -1,6 +1,4 @@
-<%@page import="java.util.concurrent.CopyOnWriteArrayList"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*" %>
 <%@ page import="java.util.*"%>
 <%@ page import="shop.dao.*" %>
 
@@ -12,13 +10,30 @@
 		return;
 	}
 %>
+<!--Model Layer -->
+<%
+	// 1. 특수한 형태의 데이터(RDBMS:mariadb)
+	// 2. API사용 (JDBC API)하여 자료구조(ResultSet) 취득
+	// 3. 일반화된 자료구조(ArrayList<HashMap>)로 변경 -> 모델 취득
+%>
 
 <%
-	/*
-		select emp_id empId, emp_name empName, emp_job empJob,  hire_date hireDate, active
-		from emp
-		order by active asc, hire_date desc
-	*/
+	/* empList 페이징*/
+	
+	int currentPage = 1; // 현재페이지
+	
+	if(request.getParameter("currentPage") != null) {
+		currentPage = Integer.parseInt(request.getParameter("currentPage"));
+	}
+	
+	int rowPerPage = 10; // 한페이지당 보여지는 행수(10개)
+	int startRow = (currentPage - 1) * rowPerPage; // 페이지당 시작하는 행번호
+	
+	//전체 사원수 구하기...
+%>
+
+<%
+	
 	/*
 	String empId = request.getParameter("empId"); 
 	String empName = request.getParameter("empName"); 
@@ -46,37 +61,29 @@
 	
 	System.out.println("rs :" + rs);
 	*/
-%>
-
-<%
-	// request 분석
-	int currentPage = 1; // 현재페이지
-
-	if(request.getParameter("currentPage") != null) {
-		currentPage = Integer.parseInt(request.getParameter("currentPage"));
-	}
 	
-	int rowPerPage = 10; // 한페이지당 보여지는 행수(10개)
-	int startRow = (currentPage - 1) * rowPerPage; // 페이지당 시작하는 행번호
-
-
-//!--Model Layer -->
-
-	// 특수한 형태의 데이터(RDBMS:maeisdb)
-	// -> API사용 (JDBC API)하여 자료구조(ResultSet) 취득
-	// -> 일반화된 자료구조(ArryList<HashMap>)로 변경 -> 모델 취득
-	
-
-	
-	//JDBC API 종속된 자료구조 모델 ResultSet -> 기본 API 자료구조(ArryList)로 변결
+	//JDBC API 종속된 자료구조 모델 ResultSet -> 기본 API 자료구조(ArrayList)로 변경
 	ArrayList<HashMap<String, Object>> empList = EmpDAO.EmpList(startRow, rowPerPage);
+	// ResultSet(rs) -> ArrayList<HashMap<String, Object>> 
 	
-	// ResultSet -> ArrayList<HashMap<String, Object>> 
-
+	/* while(rs.next()) {
+		HashMap<String,Object> emp = new HashMap<String,Object>();
+		emp.put("empId", rs.getString("empId"));
+		emp.put("grade", rs.getInt("grade"));
+		emp.put("empName", rs.getString("empName"));
+		emp.put("empJob", rs.getString("empJob"));
+		emp.put("hireDate", rs.getString("hireDate"));
+		emp.put("active", rs.getString("active"));
+			
+		list.add(emp);
+	} */ 
 	
 	// JDBC API 사용이 끝났다면 DB자원들을을 반납
-	
 %>
+<%
+	/*session의 정보 -로그인한 emp의 grade로 권한부여 설정하기 위해*/
+	HashMap<String, Object> sessionMap = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
+%>	
 
 <!--view Layer : 모델(ArrayList<HashMap<String, Object>>) 출력 -->
 <!DOCTYPE html>
@@ -114,14 +121,19 @@
 						<td><%=(String)(m.get("empJob"))%></td>
 						<td><%=(String)(m.get("hireDate"))%></td>
 						<td>
-							<% // "grade" 0 보다 큰사람만 "active"를 전환할 수 있다
-								HashMap<String, Object> resultMap = (HashMap<String, Object>)(session.getAttribute("loginEmp"));
-								if((Integer)(resultMap.get("grade"))> 0) { 
+							<% // "grade" 0 보다 큰사람만 "active"를 전환할 수 있다 ex) 로그인한 emp중 grade 0이상은 admin 뿐임
+								if((Integer)(sessionMap.get("grade"))> 0) { 
 							%> 
 								<a href='/shop/emp/modifyEmpActive.jsp?empId=<%=(String)(m.get("empId"))%>&active=<%=(String)(m.get("active"))%>'>
 									<%=(String)(m.get("active"))%>
 								</a>
 							<%
+								} else {
+							%>
+								<a href='/shop/emp/modifyEmpActive.jsp?empId=<%=(String)(m.get("empId"))%>&active=<%=(String)(m.get("active"))%>'>
+									<%=(String)(m.get("active"))%>
+								</a>
+							<%		
 								}
 							%>
 						</td>

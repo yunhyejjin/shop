@@ -69,6 +69,7 @@ public class EmpDAO {
 		stmt.setInt(2,rowPerPage);  
 		
 		ResultSet rs = stmt.executeQuery();
+		
 		while(rs.next()) {
 			HashMap<String,Object> m = new HashMap<String,Object>();
 			m.put("empId", rs.getString("empId"));

@@ -9,7 +9,7 @@ public class DBHelper {
 		Class.forName("org.mariadb.jdbc.Driver"); 
 		
 		// 로컬 PC의 Properties파일 읽어 오기
-		FileReader fr = new FileReader("D:\\dev\\auth\\mariadb.properties");
+		FileReader fr = new FileReader("C:\\Users\\hyejin\\auth\\mariadb.properties");
 		Properties prop = new Properties();
 		prop.load(fr);
 		//System.out.println(prop.getProperty("id"));
