@@ -1,4 +1,4 @@
-<%@page import="shop.dao.customerDAO"%>
+<%@page import="shop.dao.CustomerDAO"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ page import="java.sql.*" %>
@@ -6,7 +6,7 @@
 <%@ page import="java.util.*"%>
 
 <%
-	//인증분기 : 세션변수 이음 - loginCustomer	
+//인증분기 : 세션변수 이음 - loginCustomer	
 	if(session.getAttribute("loginCustomer") == null) {
 		response.sendRedirect("/shop/customer/customerGoodsList.jsp");
 		return;
@@ -18,13 +18,11 @@
 	System.out.println("loginCustomerMail : " + loginCustomer.get("customerMail"));
 %>
 
-<%	
-	
+<%
 	ArrayList<HashMap<String, Object>> customerOne 
-		= customerDAO.customerOne((String)loginCustomer.get("customerMail"));
+		= CustomerDAO.customerOne((String)loginCustomer.get("customerMail"));
 	
 	System.out.println("customerOne : " + customerOne);
-	
 %>
 <!DOCTYPE html>
 <html>

@@ -16,14 +16,14 @@
 %>
 
 <%
-	// DAO 요청값
+// DAO 요청값
 	String customerMail = request.getParameter("customerMail");
 	String customerPw = request.getParameter("customerPw");
 	//디버깅
 	System.out.println("customerMail : " + customerMail);
 	System.out.println("customerPw : " + customerPw);
 	
-	HashMap<String, Object> loginCustomer = customerDAO.customerLogin(customerMail, customerPw); // 로그인한 customer mail,pw
+	HashMap<String, Object> loginCustomer = CustomerDAO.customerLogin(customerMail, customerPw); // 로그인한 customer mail,pw
 	System.out.println("loginCustomer(session) : " + loginCustomer);
 %>
 

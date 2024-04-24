@@ -18,8 +18,8 @@
 	// 세션변수 이름 - loginEmp
 	HashMap<String, Object> loginMember 
 		= (HashMap<String, Object>)(session.getAttribute("loginEmp"));
-	System.out.println(loginMember);
-	System.out.println(loginMember.get("empId"));
+	System.out.println("updateGoodsAction-loginMember : " + loginMember);
+	System.out.println("updateGoodsAction-empId : " + loginMember.get("empId"));
 
 %>
 <%
@@ -34,63 +34,105 @@
 	String goodsContent = request.getParameter("goodsContent");
 	
 	//디버깅
-	System.out.println("empId(수정사원) : " + loginMember.get("empId"));
-	System.out.println("goodsNo(update) : " + goodsNo);	
-	System.out.println("goodsTitle(update) : " + goodsTitle);
-	System.out.println("filename(update) : " + fileName);
-	System.out.println("goodsPrice(update) : " + goodsPrice);
-	System.out.println("goodsContent(update) : " + goodsContent);
+	System.out.println("updateGoodsAction-empId(수정할직원ID) : " + loginMember.get("empId"));
+	System.out.println("updateGoodsAction-goodsNo : " + goodsNo);	
+	System.out.println("updateGoodsAction-goodsTitle : " + goodsTitle);
+	System.out.println("updateGoodsAction-filename : " + fileName);
+	System.out.println("updateGoodsAction-goodsPrice : " + goodsPrice);
+	System.out.println("updateGoodsAction-goodsContent : " + goodsContent);
 	
 	//새로 수정할 이미지
 	String newImg = "";
-	Part part = request.getPart("newImg");
-	System.out.println(part);
-
-
+	Part part = request.getPart("goodsImg");
+	
+	if(newImg.equals("")){
+		
 		String originalName = part.getSubmittedFileName();
 		
 		int dotIdx = originalName.lastIndexOf(".");
 		String ext = originalName.substring(dotIdx);// .png
+			
+		UUID uuid = UUID.randomUUID(); // 랜덤문자열(파일명)
+		/* fileName = fileName + ext; */
+		fileName = originalName; 
 		
+		int row = GoodsDAO.updateGoods(goodsNo, goodsTitle, newImg, goodsPrice, goodsContent);
+		System.out.println("updateGoods Row : " + row);
+		
+		String msg = "";
+		
+		if(row == 1) {
+			// part -> is -> os -> 빈파일
+			// 1)
+			InputStream is = part.getInputStream();
+			// 3)+ 2)
+			String filePath = request.getServletContext().getRealPath("upload");
+			File f = new File(filePath, newImg); // 빈파일
+			OutputStream os = Files.newOutputStream(f.toPath()); // os + file
+			is.transferTo(os);
+			
+			is.close();
+			os.close();
+			
+			System.out.println("수정성공");
+			msg =  URLEncoder.encode("수정성공!", "UTF-8");
+			response.sendRedirect("/shop/emp/goodsOne.jsp?goodsNo="+goodsNo+"&msg="+ msg);
+		} else {
+			
+			System.out.println("수정실패");
+			msg =  URLEncoder.encode("수정실패!", "UTF-8");
+			response.sendRedirect("/shop/emp/goodsOne.jsp?goodsNo="+goodsNo+"&msg="+ msg);
+		}
+		
+	} else {
+		
+		int row = GoodsDAO.updateGoods(goodsNo, goodsTitle, newImg, goodsPrice, goodsContent);
+		System.out.println("updateGoods Row : " + row);
+		
+		String originalName = part.getSubmittedFileName();
+			
+		int dotIdx = originalName.lastIndexOf(".");
+		String ext = originalName.substring(dotIdx);// .png
+			
 		UUID uuid = UUID.randomUUID(); // 랜덤문자열(파일명)
 		/* fileName = fileName + ext; */
 		fileName = originalName; 
 
-	
-	
-	newImg = fileName;
-	//디버깅
-	System.out.println("newImg : " + newImg);
-	
-	int row = GoodsDAO.updateGoods(goodsNo, goodsTitle, newImg, goodsPrice, goodsContent);
-	System.out.println("updateGoods Row : " + row);
-
-	
-	String msg = "";
-	if(row == 1) { 
+		newImg = fileName;
+		//디버깅
+		System.out.println("newImg : " + newImg);
 		
-		// part -> is -> os -> 빈파일
-		// 1)
-		InputStream is = part.getInputStream();
-		// 3)+ 2)
-		String filePath = request.getServletContext().getRealPath("upload");
-		File f = new File(filePath, newImg); // 빈파일
-		OutputStream os = Files.newOutputStream(f.toPath()); // os + file
-		is.transferTo(os);
+		String msg = "";
 		
-		is.close();
-		os.close();
+		if(row == 1) { 
+			
+			// part -> is -> os -> 빈파일
+			// 1)
+			InputStream is = part.getInputStream();
+			// 3)+ 2)
+			String filePath = request.getServletContext().getRealPath("upload");
+			File f = new File(filePath, newImg); // 빈파일
+			OutputStream os = Files.newOutputStream(f.toPath()); // os + file
+			is.transferTo(os);
+			
+			is.close();
+			os.close();
+			
+			System.out.println("수정성공");
+			msg =  URLEncoder.encode("수정성공!", "UTF-8");
+			response.sendRedirect("/shop/emp/goodsOne.jsp?goodsNo="+goodsNo+"&msg="+ msg);
+			
+		} else {
+			
+			System.out.println("수정실패");
+			msg =  URLEncoder.encode("수정실패!", "UTF-8");
+			response.sendRedirect("/shop/emp/goodsOne.jsp?goodsNo="+goodsNo+"&msg="+ msg);
+		}
 		
-		System.out.println("수정성공");
-		msg =  URLEncoder.encode("수정성공!", "UTF-8");
-		response.sendRedirect("/shop/emp/goodsOne.jsp?goodsNo="+goodsNo+"&msg="+ msg);
-		
-	} else {
-		
-		System.out.println("수정실패");
-		msg =  URLEncoder.encode("수정실패!", "UTF-8");
-		response.sendRedirect("/shop/emp/goodsOne.jsp?goodsNo="+goodsNo+"&msg="+ msg);
 	}
 	
+
+
 	
+
 %>

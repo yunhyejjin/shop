@@ -36,14 +36,20 @@
 	<form method="post" action="/shop/orders/ordersAction.jsp">
 		
 		<div>주문번호</div>
-		
+			<input type="text" name="ordersNo">
+			
 		<div>상품번호</div>
-		
+			<input type="text" name="goodsNo">
+			
 		<div>주문수량</div>
-		<input type="number" name="amount">
+			<input type="number" name="totalAmount">
+			
 		<div>총주믄금액</div>
-		
+			<input type="number" name="totalPrice">
+			
 		<div>주문하는사람</div>
+			<input type="text" name="ordersCustomer">
+			
 		<div>주소</div>
 		<textarea rows="1" cols="50">주소를입력해주세요</textarea>
 		

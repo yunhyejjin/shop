@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<%@ page import="java.sql.*" %>
+<%@ page import="shop.dao.*" %>
+<%@ page import="java.util.*"%>
 <%
 	
 	if(session.getAttribute("loginCustomer") == null) {
@@ -11,23 +12,11 @@
 <%
 	// 요청값
 	String oneMail = request.getParameter("oneMail");
-	String oneBirth = request.getParameter("oneBirth");
-		
-	System.out.println("customer mail : " + oneMail);
-	System.out.println("customer birth : " + oneBirth);
-
+	System.out.println("updatecustomerForm.jsp mail : " + oneMail);
 	
-	String sql = " select * from customer";
+	ArrayList<HashMap<String, Object>> customerOne = CustomerDAO.customerOne(oneMail);
+	System.out.println("updatecustomerForm.jsp customerOne : " + oneMail);
 	
-	Class.forName("org.mariadb.jdbc.Driver"); // 마리아DB
-	Connection conn = null;
-	PreparedStatement stmt = null;
-	ResultSet rs = null;
-	
-	conn = DriverManager.getConnection( // DB접속
-			"jdbc:mariadb://127.0.0.1:3306/shop", "root", "java1234");
-	stmt = conn.prepareStatement(sql); 
-	rs = stmt.executeQuery();
 	
 	
 %>
@@ -41,12 +30,12 @@
 	<h1>회원정보수정</h1>
 	
 	<%
-		if(rs.next()){
+		for(HashMap c : customerOne){
 	%>
 	<form method="post" action="/shop/customer/updateCustomerAction.jsp">
 		
 		<div>mail</div>
-		<input type="text" name="mail" value="<%=rs.getString("mail")%>" readonly="readonly">
+		<input type="text" name="mail" value="<%=(String)(c.get("mail"))%>" readonly="readonly">
 		
 		<div>pw</div>
 		<input type="password" name="pw">
@@ -55,7 +44,7 @@
 		<input type="text" name="name">
 		
 		<div>birth</div>
-		<input type="datetime" name="birth" value="<%=rs.getString("birth")%>" readonly="readonly">
+		<input type="datetime" name="birth" value="<%=(String)(c.get("birth"))%>" readonly="readonly">
 		
 		<div>gender</div>
 		<input type="radio" name="gender" value="남"> 남

@@ -118,6 +118,7 @@
 								<p class="card-text">상품명:<%=(String)(m1.get("goodsTitle"))%></p>
 								<p class="card-text">가격:<%=(Integer)(m1.get("goodsPrice"))%></p>
 							</div>
+							<div><a href="/shop/orders/ordersForm.jsp">주문하기</a></div>
 						</div>	
 					</div>		
 			<%			
