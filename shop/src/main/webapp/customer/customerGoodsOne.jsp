@@ -48,7 +48,12 @@
 							<p class="card-text">상품내용:<%=(String)(c.get("goodsContent"))%></p>
 							<p class="card-text">가격:<%=(Integer)(c.get("goodsPrice"))%></p>
 						</div>
-						<div><a href="/shop/customer/customerOrdersForm.jsp?=<%=goodsNo%>">주문하기</a></div>
+						<div>
+							<form method="post" action="/shop/customer/customerOrdersForm.jsp">
+								<input type="hidden" name="goodsNo" value="<%=(Integer)(c.get("goodsNo"))%>">
+								<button>주문하기</button>
+							</form>
+						</div>
 					</div>	
 				</div>		
 			</div>

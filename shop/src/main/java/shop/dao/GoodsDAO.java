@@ -108,7 +108,7 @@ public class GoodsDAO {
 		stmt.setInt(1, goodsNo);
 		
 		ResultSet rs = stmt.executeQuery();
-		
+		System.out.println("GoodsDAO호출성공 : "+ rs);
 		while(rs.next()) {
 			HashMap<String,Object> m = new HashMap<String,Object>(); 
 			m.put("category", rs.getString("category")); // HashMap(key, value)
